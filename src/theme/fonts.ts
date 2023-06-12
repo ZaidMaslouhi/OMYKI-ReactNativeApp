@@ -1,4 +1,4 @@
-import Metrics from './metrics'
+import Metrics from "./metrics";
 
 const Size = {
   font6: Metrics.screenWidth * (6 / 365),
@@ -9,23 +9,23 @@ const Size = {
   font16: Metrics.screenWidth * (16 / 365),
   font18: Metrics.screenWidth * (18 / 365),
   font20: Metrics.screenWidth * (20 / 365),
-  font24: Metrics.screenWidth * (24 / 365)
-}
+  font24: Metrics.screenWidth * (24 / 365),
+};
 
 const Weight = {
-  full: '900',
-  semi: '700',
-  low: '400',
-  normal: 'normal',
-  bold: 'bold'
-}
+  full: "900",
+  semi: "700",
+  low: "400",
+  normal: "normal",
+  bold: "bold",
+} as const;
 
 const Family = {
-  brand: 'SourceSansPro'
-}
+  brand: "SourceSansPro",
+};
 
 export const Fonts = {
   Size,
   Weight,
-  Family
-}
+  Family,
+};
