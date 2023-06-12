@@ -1,10 +1,8 @@
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import useCustomFonts from "./src/hooks/useCustomFonts";
-import * as SplashScreen from 'expo-splash-screen'
-
-SplashScreen.preventAutoHideAsync()
+import * as SplashScreen from "expo-splash-screen";
 
 export default function App() {
   const fontsLoaded = useCustomFonts();
@@ -20,7 +18,11 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container}
+      onLayout={() => {
+        void onLayoutRootView();
+      }}
+    >
       <Text>Open up App.tsx to start working on your app!</Text>
       <StatusBar style="auto" />
     </View>
