@@ -16,9 +16,9 @@ function Button({
   onPress,
 }: {
   title: String;
-  primary: boolean;
-  outline: boolean;
-  icon: ImageSourcePropType;
+  primary?: boolean;
+  outline?: boolean;
+  icon?: ImageSourcePropType;
   onPress: () => {};
 }) {
   return (
