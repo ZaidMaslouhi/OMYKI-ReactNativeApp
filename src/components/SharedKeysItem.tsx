@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageSourcePropType, Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
 import User from "../interfaces/User";
