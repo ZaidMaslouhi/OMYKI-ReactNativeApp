@@ -1,9 +1,11 @@
 import "react-native-gesture-handler";
 import React, { useCallback } from "react";
+import * as SplashScreen from "expo-splash-screen";
 import { StyleSheet, View } from "react-native";
 import useCustomFonts from "./src/hooks/useCustomFonts";
-import * as SplashScreen from "expo-splash-screen";
 import Colors from "./src/theme/colors";
+import { NavigationContainer } from "@react-navigation/native";
+import Navigator from "./src/navigation";
 
 export default function App() {
   const fontsLoaded = useCustomFonts();
@@ -24,7 +26,11 @@ export default function App() {
       onLayout={() => {
         void onLayoutRootView();
       }}
-    ></View>
+    >
+      <NavigationContainer>
+        <Navigator />
+      </NavigationContainer>
+    </View>
   );
 }
 
