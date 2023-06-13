@@ -4,6 +4,7 @@ import ModalInformation from "../../components/ModalInformation";
 import ActionBar from "../../components/ActionBar";
 import ShareButton from "../../components/ShareButton";
 import KeyItem from "../../components/KeyManagmentItem";
+import { useNavigation } from "@react-navigation/native";
 
 const Keys = [
   {
@@ -39,12 +40,14 @@ const Keys = [
 ];
 
 function KeyManagement() {
+  const navigation = useNavigation();
+
   return (
     <>
       <ActionBar
         title="Key management"
         withBack={true}
-        onPress={() => () => {}}
+        onPress={() => navigation.goBack()}
       />
 
       {Keys.length > 0 ? (
@@ -53,7 +56,10 @@ function KeyManagement() {
           keyExtractor={(_, index) => index.toString()}
           contentContainerStyle={{ padding: 16, gap: 8 }}
           renderItem={({ item, index }) => (
-            <TouchableOpacity key={index} onPress={() => () => {}}>
+            <TouchableOpacity
+              key={index}
+              onPress={() => navigation.navigate("SharedKeys")}
+            >
               <KeyItem key={item.accessKey} {...item} />
             </TouchableOpacity>
           )}

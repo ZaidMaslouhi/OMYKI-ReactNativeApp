@@ -5,8 +5,11 @@ import PhoneNumberInput from "../../components/PhoneNumberInput";
 import LogoTitle from "../../components/LogoTitle";
 import Colors from "../../theme/colors";
 import { Fonts } from "../../theme/fonts";
+import { useNavigation } from "@react-navigation/native";
 
 function SignUp() {
+  const navigation = useNavigation();
+
   return (
     <View
       style={{
@@ -23,7 +26,11 @@ function SignUp() {
 
       <PhoneNumberInput />
 
-      <Button title="Continue" primary onPress={() => () => {}} />
+      <Button
+        title="Continue"
+        primary
+        onPress={() => navigation.navigate("UserVerification")}
+      />
 
       <View style={{ gap: 16 }}>
         <View style={{ alignItems: "center" }}>
@@ -41,13 +48,13 @@ function SignUp() {
         <Button
           title="Sign Up with Google"
           icon={require("../../assets/icons/google-icon.png")}
-          onPress={() => () => {}}
+          onPress={() => navigation.navigate("UserVerification")}
         />
 
         <Button
           title="Sign Up with Apple"
           icon={require("../../assets/icons/apple-icon.png")}
-          onPress={() => () => {}}
+          onPress={() => navigation.navigate("UserVerification")}
         />
       </View>
     </View>

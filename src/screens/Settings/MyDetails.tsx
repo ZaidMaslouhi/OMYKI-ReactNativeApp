@@ -9,11 +9,18 @@ import IconUserProfile from "../../assets/icons/UserProfile.svg";
 import IconEmail from "../../assets/icons/Email.svg";
 import Colors from "../../theme/colors";
 import { Fonts } from "../../theme/fonts";
+import { useNavigation } from "@react-navigation/native";
 
 function MyDetails() {
+  const navigation = useNavigation();
+
   return (
     <>
-      <ActionBar title="My details" withBack={true} onPress={() => () => {}} />
+      <ActionBar
+        title="My details"
+        withBack={true}
+        onPress={() => navigation.goBack()}
+      />
 
       <ScrollView contentContainerStyle={{ gap: 16, padding: 16 }}>
         <EditProfileImage />

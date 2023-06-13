@@ -8,14 +8,17 @@ import IconUserProfile from "../../assets/icons/UserProfile.svg";
 import IconEmail from "../../assets/icons/Email.svg";
 import Colors from "../../theme/colors";
 import { Fonts } from "../../theme/fonts";
+import { useNavigation } from "@react-navigation/native";
 
 function PersonalInformation() {
+  const navigation = useNavigation();
+
   return (
     <>
       <ActionBar
         title="Personal information"
         withBack={true}
-        onPress={() => () => {}}
+        onPress={() => navigation.goBack()}
       />
 
       <ScrollView contentContainerStyle={{ gap: 16, padding: 16 }}>
@@ -45,7 +48,11 @@ function PersonalInformation() {
           />
         </FormInput>
 
-        <Button title="Continue" primary onPress={() => () => {}} />
+        <Button
+          title="Continue"
+          primary
+          onPress={() => navigation.navigate("Congratulations")}
+        />
       </ScrollView>
     </>
   );

@@ -4,6 +4,7 @@ import ActionBar from "../../components/ActionBar";
 import SettingsNavItem from "../../components/SettingsNavItem";
 import Colors from "../../theme/colors";
 import { Fonts } from "../../theme/fonts";
+import { useNavigation } from "@react-navigation/native";
 
 type GeneralSettings = {
   openingNearby: boolean;
@@ -11,6 +12,7 @@ type GeneralSettings = {
 };
 
 function GeneralSettings() {
+  const navigation = useNavigation();
   const [switchStates, setSwitchStates] = useState<GeneralSettings>({
     openingNearby: false,
     notifications: true,
@@ -28,7 +30,7 @@ function GeneralSettings() {
       <ActionBar
         title="General settings"
         withBack={true}
-        onPress={() => () => {}}
+        onPress={() => navigation.goBack()}
       />
 
       <View style={{ gap: 8, padding: 16 }}>

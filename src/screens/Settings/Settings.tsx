@@ -4,35 +4,39 @@ import ActionBar from "../../components/ActionBar";
 import Colors from "../../theme/colors";
 import { Fonts } from "../../theme/fonts";
 import SettingsNavItem from "../../components/SettingsNavItem";
+import { useNavigation } from "@react-navigation/native";
+import RootStackParamList from "../../interfaces/RootList";
 
 const SettingsNavItems = [
   {
     title: "Key management",
     icon: require("../../assets/icons/key-management-settings.png"),
     color: Colors.dark,
-    navigate: "KeyManagement",
+    navigate: "KeyManagement" as keyof RootStackParamList,
   },
   {
     title: "General settings",
     icon: require("../../assets/icons/settings.png"),
     color: Colors.dark,
-    navigate: "GeneralSettings",
+    navigate: "GeneralSettings" as keyof RootStackParamList,
   },
   {
     title: "Support",
     icon: require("../../assets/icons/support.png"),
     color: Colors.dark,
-    navigate: "Home",
+    navigate: "Home" as keyof RootStackParamList,
   },
   {
     title: "Sign out",
     icon: require("../../assets/icons/Sign-out.png"),
     color: Colors.danger,
-    navigate: "SignIn",
+    navigate: "SignIn" as keyof RootStackParamList,
   },
 ];
 
 function Settings() {
+  const navigation = useNavigation();
+
   return (
     <>
       <ActionBar title="Settings" />
@@ -53,7 +57,7 @@ function Settings() {
             >
               James Hall
             </Text>
-            <TouchableOpacity onPress={() => () => {}}>
+            <TouchableOpacity onPress={() => navigation.navigate("MyDetails")}>
               <Text
                 style={{
                   color: Colors.brand,
@@ -77,7 +81,7 @@ function Settings() {
               title={item.title}
               icon={item.icon}
               color={item.color}
-              onPress={() => () => {}}
+              onPress={() => navigation.navigate(item.navigate)}
             />
           )}
           ItemSeparatorComponent={() => (

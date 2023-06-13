@@ -3,6 +3,7 @@ import ActionBar from "../../components/ActionBar";
 import { SectionList, Text, View } from "react-native";
 import SharedKeysItem from "../../components/SharedKeysItem";
 import { Fonts } from "../../theme/fonts";
+import { useNavigation } from "@react-navigation/native";
 
 const Keys = [
   {
@@ -55,9 +56,15 @@ const Keys = [
 ];
 
 function SharedKeys() {
+  const navigation = useNavigation();
+
   return (
     <>
-      <ActionBar title="Back" withBack={true} onPress={() => () => {}} />
+      <ActionBar
+        title="Back"
+        withBack={true}
+        onPress={() => navigation.goBack()}
+      />
 
       <SectionList
         contentContainerStyle={{ padding: 16 }}

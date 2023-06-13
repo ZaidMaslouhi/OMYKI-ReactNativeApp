@@ -3,8 +3,10 @@ import { Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import ActionBar from "../../components/ActionBar";
 import Colors from "../../theme/colors";
 import { Fonts } from "../../theme/fonts";
+import { useNavigation } from "@react-navigation/native";
 
 function UserVerification() {
+  const navigation = useNavigation();
   const [timer, setTimer] = useState(10);
   const timerRef = useRef(timer);
   // const [invalid, setInvalid] = useState(false)
@@ -14,8 +16,14 @@ function UserVerification() {
       timerRef.current -= 1;
       if (timerRef.current < 0) {
         clearInterval(timerId);
+        const routes = navigation.getState()?.routes;
+        const prevRoute = routes[routes.length - 2];
+        if (prevRoute.name === "SignUp") {
+          navigation.navigate("PersonalInformation");
+        } else navigation.navigate("Home");
       } else {
-        setTimer(timerRef.current);
+        if (timerRef.current < 10) setTimer("0" + timerRef.current);
+        else setTimer(timerRef.current);
       }
     }, 1000);
 
@@ -26,7 +34,11 @@ function UserVerification() {
 
   return (
     <>
-      <ActionBar title="Back" withBack={true} onPress={() => () => {}} />
+      <ActionBar
+        title="Back"
+        withBack={true}
+        onPress={() => navigation.goBack()}
+      />
 
       <View
         style={{
