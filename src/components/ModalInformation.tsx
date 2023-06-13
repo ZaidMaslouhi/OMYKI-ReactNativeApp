@@ -52,7 +52,7 @@ function ModalInformation({
       </Text>
 
       {buttonText && (
-        <Button title={buttonText} primary onPress={() => onPressButton} />
+        <Button title={buttonText} primary onPress={onPressButton} />
       )}
     </View>
   );
