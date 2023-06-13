@@ -14,7 +14,7 @@ function ModalInformation({
   icon: ImageSourcePropType;
   title: string;
   description: string;
-  buttonText: string;
+  buttonText?: string;
   onPressButton: () => {};
 }) {
   return (
