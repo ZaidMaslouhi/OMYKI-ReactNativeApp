@@ -9,10 +9,11 @@ import Congratulations from "../screens/Auth/Congratulations";
 import KeyManagement from "../screens/Key Management/KeyManagement";
 import GeneralSettings from "../screens/Key Management/GeneralSettings";
 import SharedKeys from "../screens/Key Management/SharedKeys";
-import { Settings } from "react-native";
 import MyDetails from "../screens/Settings/MyDetails";
 import NotFound from "../screens/Error/NotFound";
 import ConnectionFailed from "../screens/Error/ConnectionFailed";
+import Settings from "../screens/Settings/Settings";
+import HomeTabBar from "./HomeTabBar";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,8 @@ function Navigator() {
       initialRouteName={INIT_ROUTE}
       screenOptions={{ headerShown: false }}
     >
+      <Stack.Screen name="Home" component={HomeTabBar} />
+
       <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="UserVerification" component={UserVerification} />
