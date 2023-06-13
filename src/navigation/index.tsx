@@ -14,10 +14,14 @@ import NotFound from "../screens/Error/NotFound";
 import ConnectionFailed from "../screens/Error/ConnectionFailed";
 import Settings from "../screens/Settings/Settings";
 import HomeTabBar from "./HomeTabBar";
+import useConnectionStatus from "../hooks/useConnectionStatus";
+import RootStackParamList from "../interfaces/RootList";
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function Navigator() {
+  useConnectionStatus();
+
   return (
     <Stack.Navigator
       initialRouteName={INIT_ROUTE}
