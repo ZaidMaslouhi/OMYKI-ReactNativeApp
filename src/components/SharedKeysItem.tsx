@@ -2,13 +2,14 @@ import React from "react";
 import { Image, ImageSourcePropType, Text, View } from "react-native";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
+import User from "../interfaces/User";
 
 function SharedKeysItem({
   accessKey,
   user,
 }: {
   accessKey: string;
-  user: { image: ImageSourcePropType; fullName: string; email: string };
+  user: User;
 }) {
   return (
     <View

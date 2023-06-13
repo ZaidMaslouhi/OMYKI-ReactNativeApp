@@ -3,6 +3,7 @@ import { Image, ImageSourcePropType, Text, View } from "react-native";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
 import NotificationButtons from "./NotificationButtons";
+import User from "../interfaces/User";
 
 function InvitationMessage({ status }: { status: "Accepted" | "Rejected" }) {
   return (
@@ -35,7 +36,7 @@ function NotificationItem({
 }: {
   title: string;
   time: string;
-  user: { image: ImageSourcePropType; fullName: string; email: string };
+  user: User;
   invitationStatus?: "Accepted" | "Rejected";
 }) {
   return (
