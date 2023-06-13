@@ -15,7 +15,7 @@ function ModalInformation({
   title: string;
   description: string;
   buttonText?: string;
-  onPressButton: Function;
+  onPressButton: () => void;
 }) {
   return (
     <View

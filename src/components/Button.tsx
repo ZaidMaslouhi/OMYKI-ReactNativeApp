@@ -19,7 +19,7 @@ function Button({
   primary?: boolean;
   outline?: boolean;
   icon?: ImageSourcePropType;
-  onPress: () => {};
+  onPress: () => void;
 }) {
   return (
     <TouchableOpacity

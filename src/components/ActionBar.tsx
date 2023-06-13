@@ -10,7 +10,7 @@ function ActionBar({
 }: {
   title: string;
   withBack?: boolean;
-  onPress?: () => {};
+  onPress?: () => void;
 }) {
   return (
     <View

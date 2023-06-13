@@ -17,7 +17,7 @@ function SettingsNavItem({
   title: string;
   icon: ImageSourcePropType;
   color: string;
-  onPress: () => {};
+  onPress: () => void;
 }) {
   return (
     <TouchableOpacity
