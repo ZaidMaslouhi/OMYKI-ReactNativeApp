@@ -1,36 +1,105 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
+import {
+  Text,
+  TouchableWithoutFeedback,
+  View,
+  Pressable,
+  Keyboard,
+} from "react-native";
 import ActionBar from "../../components/ActionBar";
 import Colors from "../../theme/colors";
 import { Fonts } from "../../theme/fonts";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation } from "@react-navigation/native";
+import {
+  codeVerification,
+  sendPhoneNumberVerfication,
+} from "../../services/phoneAuth";
+import OTPInput from "../../components/OTPInput";
+import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
+import { firebaseConfig } from "../../config/firebase";
+import { ApplicationVerifier } from "firebase/auth";
 
-function UserVerification() {
+function UserVerification({
+  route,
+}: {
+  route: RouteProp<{ params: { phoneNumber: string } }, "params">;
+}) {
+  const verificationId = useRef<string | undefined>();
   const navigation = useNavigation();
-  const [timer, setTimer] = useState(10);
+  const [timer, setTimer] = useState(20);
   const timerRef = useRef(timer);
-  // const [invalid, setInvalid] = useState(false)
+  const recaptchaVerifier = useRef<FirebaseRecaptchaVerifierModal>(null);
+  const [invalid, setInvalid] = useState(false);
+  // useEffect(() => {
+  //   const timerId = setInterval(() => {
+  //     timerRef.current -= 1;
+  //     if (timerRef.current < 0) {
+  //       clearInterval(timerId);
+  //       const routes = navigation.getState()?.routes;
+  //       const prevRoute = routes[routes.length - 2];
+  //       if (prevRoute.name === "SignUp") {
+  //         navigation.navigate("PersonalInformation");
+  //       } else navigation.navigate("Home");
+  //     } else {
+  //       // if (timerRef.current < 10) setTimer("0" + timerRef.current);
+  //       // else
+  //       setTimer(timerRef.current);
+  //     }
+  //   }, 1000);
+
+  //   return () => {
+  //     clearInterval(timerId);
+  //   };
+  // }, []);
+
+  const [otpCode, setOTPCode] = useState("");
+  const [isPinReady, setIsPinReady] = useState(false);
+  const maximumCodeLength = 6;
+
+  const verifyPhoneNumber = async (
+    phoneNumber: string,
+    recapture: ApplicationVerifier
+  ) => {
+    verificationId.current = await sendPhoneNumberVerfication({
+      phoneNumber,
+      recaptureVerification: recapture,
+    });
+  };
+
+  const verifyOTPCode = async ({
+    verifId,
+    otp,
+  }: {
+    verifId: string;
+    otp: string;
+  }) => {
+    const isVerified = await codeVerification({
+      verificationId: verifId,
+      verificationCode: otp,
+    });
+    return isVerified;
+  };
 
   useEffect(() => {
-    const timerId = setInterval(() => {
-      timerRef.current -= 1;
-      if (timerRef.current < 0) {
-        clearInterval(timerId);
-        const routes = navigation.getState()?.routes;
-        const prevRoute = routes[routes.length - 2];
-        if (prevRoute.name === "SignUp") {
-          navigation.navigate("PersonalInformation");
-        } else navigation.navigate("Home");
-      } else {
-        if (timerRef.current < 10) setTimer("0" + timerRef.current);
-        else setTimer(timerRef.current);
-      }
-    }, 1000);
+    if (isPinReady && verificationId.current) {
+      verifyOTPCode({
+        verifId: verificationId.current,
+        otp: otpCode,
+      })
+        .then(() => {
+          if (!invalid) navigation.navigate("PersonalInformation");
+        })
+        .catch(() => {
+          setInvalid(true);
+        });
+    }
+  }, [isPinReady]);
 
-    return () => {
-      clearInterval(timerId);
-    };
-  }, []);
+  useEffect(() => {
+    if (recaptchaVerifier.current) {
+      verifyPhoneNumber(route.params?.phoneNumber, recaptchaVerifier.current);
+    }
+  }, [route.params?.phoneNumber]);
 
   return (
     <>
@@ -73,97 +142,77 @@ function UserVerification() {
         </View>
 
         <View style={{ gap: 16, flexDirection: "row" }}>
-          <TextInput
+          <Pressable
             style={{
-              fontFamily: Fonts.Family.brand,
-              fontSize: Fonts.Size.font20,
-              fontWeight: Fonts.Weight.bold,
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center",
             }}
-            cursorColor={Colors.brand}
-            keyboardType="numeric"
-            placeholder="0"
-            defaultValue="1"
-          />
-          <TextInput
-            style={{
-              fontFamily: Fonts.Family.brand,
-              fontSize: Fonts.Size.font20,
-              fontWeight: Fonts.Weight.bold,
-            }}
-            cursorColor={Colors.brand}
-            keyboardType="numeric"
-            placeholder="0"
-          />
-          <TextInput
-            style={{
-              fontFamily: Fonts.Family.brand,
-              fontSize: Fonts.Size.font20,
-              fontWeight: Fonts.Weight.bold,
-            }}
-            cursorColor={Colors.brand}
-            keyboardType="numeric"
-            placeholder="0"
-          />
-          <TextInput
-            style={{
-              fontFamily: Fonts.Family.brand,
-              fontSize: Fonts.Size.font20,
-              fontWeight: Fonts.Weight.bold,
-            }}
-            cursorColor={Colors.brand}
-            keyboardType="numeric"
-            placeholder="0"
-          />
+            onPress={Keyboard.dismiss}
+          >
+            <OTPInput
+              code={otpCode}
+              setCode={setOTPCode}
+              maximumLength={maximumCodeLength}
+              setIsPinReady={setIsPinReady}
+            />
+          </Pressable>
         </View>
 
-        {/* {!invalid ? ( */}
-        <View>
-          <Text
+        {invalid ? (
+          <View>
+            <Text
+              style={{
+                color: Colors.neutral,
+                fontFamily: Fonts.Family.brand,
+                fontSize: Fonts.Size.font14,
+              }}
+            >
+              Get the code again after 00:{timer < 10 ? "0" + timer : timer}
+            </Text>
+          </View>
+        ) : (
+          <View
             style={{
-              color: Colors.neutral,
-              fontFamily: Fonts.Family.brand,
-              fontSize: Fonts.Size.font14,
-            }}
-          >
-            Get the code again after 00:{timer < 10 ? "0" + timer : timer}
-          </Text>
-        </View>
-        {/* ) : ( */}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <Text
-            style={{
-              color: Colors.danger,
-              fontFamily: Fonts.Family.brand,
-              fontSize: Fonts.Size.font14,
-            }}
-          >
-            You entered the wrong code.
-          </Text>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              timerRef.current = 10;
-              setTimer(10);
+              flexDirection: "row",
+              justifyContent: "space-between",
             }}
           >
             <Text
               style={{
-                color: Colors.brand,
+                color: Colors.danger,
                 fontFamily: Fonts.Family.brand,
                 fontSize: Fonts.Size.font14,
-                textDecorationLine: "underline",
               }}
             >
-              Send again.
+              You entered the wrong code.
             </Text>
-          </TouchableWithoutFeedback>
-        </View>
-        {/* )} */}
+            <TouchableWithoutFeedback
+              onPress={() => {
+                timerRef.current = 20;
+                setTimer(20);
+              }}
+            >
+              <Text
+                style={{
+                  color: Colors.brand,
+                  fontFamily: Fonts.Family.brand,
+                  fontSize: Fonts.Size.font14,
+                  textDecorationLine: "underline",
+                }}
+              >
+                Send again.
+              </Text>
+            </TouchableWithoutFeedback>
+          </View>
+        )}
       </View>
+
+      <FirebaseRecaptchaVerifierModal
+        ref={recaptchaVerifier}
+        firebaseConfig={firebaseConfig}
+        // attemptInvisibleVerification={true}
+      />
     </>
   );
 }
