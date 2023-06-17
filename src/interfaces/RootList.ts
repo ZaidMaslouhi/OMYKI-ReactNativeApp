@@ -2,7 +2,7 @@ type RootStackParamList = {
   Home: undefined;
   SignUp: undefined;
   SignIn: undefined;
-  UserVerification: undefined;
+  UserVerification: { phoneNumber: string };
   PersonalInformation: undefined;
   Congratulations: undefined;
   KeyManagement: undefined;
