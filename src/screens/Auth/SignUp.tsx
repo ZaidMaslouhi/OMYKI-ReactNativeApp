@@ -29,7 +29,11 @@ function SignUp() {
       <Button
         title="Continue"
         primary
-        onPress={() => navigation.navigate("UserVerification")}
+        onPress={() => {
+          navigation.navigate("UserVerification", {
+            phoneNumber: "+212629843276",
+          });
+        }}
       />
 
       <View style={{ gap: 16 }}>
@@ -37,8 +41,8 @@ function SignUp() {
           <Text
             style={{
               color: Colors.dark,
-              fontFamily: Fonts.Family.brand,
               fontSize: Fonts.Size.font16,
+              fontFamily: Fonts.Family.brand,
             }}
           >
             or
@@ -48,13 +52,21 @@ function SignUp() {
         <Button
           title="Sign Up with Google"
           icon={require("../../assets/icons/google-icon.png")}
-          onPress={() => navigation.navigate("UserVerification")}
+          onPress={() =>
+            navigation.navigate("UserVerification", {
+              phoneNumber: "+212629843276",
+            })
+          }
         />
 
         <Button
           title="Sign Up with Apple"
           icon={require("../../assets/icons/apple-icon.png")}
-          onPress={() => navigation.navigate("UserVerification")}
+          onPress={() =>
+            navigation.navigate("UserVerification", {
+              phoneNumber: "+212629843276",
+            })
+          }
         />
       </View>
     </View>
