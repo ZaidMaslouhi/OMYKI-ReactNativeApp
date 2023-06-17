@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "286623929772",
+    "project_id": "omyki-e93a1",
+    "storage_bucket": "omyki-e93a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286623929772:android:9903d188744f868dc2d609",
+        "android_client_info": {
+          "package_name": "com.omyki.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "286623929772-o46nvn1nsqahe6r0p4kvhjclaiv9d9gs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFoxq3Ql2iwrDRSxqGreJJY-by79fvQzw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "286623929772-o46nvn1nsqahe6r0p4kvhjclaiv9d9gs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
