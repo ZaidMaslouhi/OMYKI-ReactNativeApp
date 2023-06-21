@@ -6,6 +6,7 @@ import LogoTitle from "../../components/LogoTitle";
 import Colors from "../../theme/colors";
 import { Fonts } from "../../theme/fonts";
 import { useNavigation } from "@react-navigation/native";
+import GoogleAuthService from "../../services/googleAuth";
 
 function SignUp() {
   const navigation = useNavigation();
@@ -52,11 +53,9 @@ function SignUp() {
         <Button
           title="Sign Up with Google"
           icon={require("../../assets/icons/google-icon.png")}
-          onPress={() =>
-            navigation.navigate("UserVerification", {
-              phoneNumber: "+212629843276",
-            })
-          }
+          onPress={() => {
+            GoogleAuthService();
+          }}
         />
 
         <Button
