@@ -7,12 +7,28 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:286623929772:android:9903d188744f868dc2d609",
+        "mobilesdk_app_id": "1:286623929772:android:c39f0c34b83eb35fc2d609",
         "android_client_info": {
           "package_name": "com.omyki.app"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "286623929772-33fahv7qi6muj29n607qfkbch90b33dk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.omyki.app",
+            "certificate_hash": "73ecdf8bd6e329066b979a9ba6c39db6b3f991e9"
+          }
+        },
+        {
+          "client_id": "286623929772-mqea6p1o0iqna53fql2o3f60ghlmi648.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.omyki.app",
+            "certificate_hash": "2a38a915807886851ab9fadf0c98d01e51836335"
+          }
+        },
         {
           "client_id": "286623929772-o46nvn1nsqahe6r0p4kvhjclaiv9d9gs.apps.googleusercontent.com",
           "client_type": 3
