@@ -6,6 +6,7 @@ const Colors = {
   neutral: '#80889C',
   neutral2: '#F7F6F8',
   neutral3: '#F5F4F7',
+  neutral4: '#B8C1CC',
   white: '#FFFFFF',
   dark: '#191B20',
   dark50: '#191B2005',
