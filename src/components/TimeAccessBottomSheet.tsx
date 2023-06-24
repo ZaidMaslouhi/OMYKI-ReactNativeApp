@@ -1,6 +1,13 @@
-import React, { RefObject } from "react";
+import React, { RefObject, useState } from "react";
 import BottomSheetComponent from "./BottomSheetComponent";
-import { FlatList, Platform, View, Text } from "react-native";
+import {
+  FlatList,
+  Platform,
+  View,
+  Text,
+  Share,
+  TouchableOpacity,
+} from "react-native";
 import HorizontalList from "./HorizontalList";
 import CircularInputPicker from "./CircularInputPicker";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -42,6 +49,12 @@ function TimeAccessBottomSheet({
 }: {
   bottomSheetRef: RefObject<BottomSheetModal>;
 }) {
+  const [activeAccessDuration, setActiveAccessDuration] = useState(
+    AccessDuration.findIndex(
+      (el: { title: string; active: boolean }) => el.active
+    )
+  );
+
   return (
     <BottomSheetComponent title={"Time access"} bottomSheetRef={bottomSheetRef}>
       <>
@@ -68,29 +81,35 @@ function TimeAccessBottomSheet({
             data={AccessDuration}
             keyExtractor={(_, index) => index.toString()}
             renderItem={({ item, index }) => (
-              <View
+              <TouchableOpacity
                 key={index}
+                onPress={() => setActiveAccessDuration(index)}
                 style={{
                   paddingHorizontal: 16,
                   paddingVertical: 8,
                   borderRadius: 16,
-                  borderWidth: item.active ? 2 : 0,
-                  borderColor: item.active ? Colors.brand : Colors.dark,
+                  borderWidth: activeAccessDuration === index ? 2 : 0,
+                  borderColor:
+                    activeAccessDuration === index ? Colors.brand : Colors.dark,
                 }}
               >
                 <Text
                   style={{
-                    color: item.active ? Colors.brand : Colors.dark,
+                    color:
+                      activeAccessDuration === index
+                        ? Colors.brand
+                        : Colors.dark,
                     fontFamily: Fonts.Family.brand,
-                    fontWeight: item.active
-                      ? Fonts.Weight.semi
-                      : Fonts.Weight.normal,
+                    fontWeight:
+                      activeAccessDuration === index
+                        ? Fonts.Weight.semi
+                        : Fonts.Weight.normal,
                     fontSize: Fonts.Size.font12,
                   }}
                 >
                   {item.title}
                 </Text>
-              </View>
+              </TouchableOpacity>
             )}
           />
 
@@ -120,7 +139,19 @@ function TimeAccessBottomSheet({
             justifyContent: "flex-end",
           }}
         >
-          <Button title={"Generate a link"} primary onPress={() => () => {}} />
+          <Button
+            title={"Generate a link"}
+            primary
+            onPress={async () => {
+              const result = await Share.share(
+                {
+                  message: `Access Key Shared with You: \nhttps://www.google.com/`,
+                },
+                { dialogTitle: "OMYKI | Share Your Access Key" }
+              );
+              console.log("Shared Key: ", result);
+            }}
+          />
         </View>
       </>
     </BottomSheetComponent>
