@@ -7,7 +7,7 @@ function Congratulations() {
 
   return (
     <ModalInformation
-      icon={require("../../assets/icons/congratulations.png")}
+      icon={require("../../assets/images/Congratulations.png")}
       title="Congratulations"
       description="You have successfully registered. Now you can start using our application and enjoy all its features"
       buttonText="Continue"

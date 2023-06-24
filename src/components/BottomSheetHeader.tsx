@@ -1,7 +1,8 @@
 import React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
+import CloseIcon from "../assets/icons/Close.svg";
 
 function BottomSheetHeader({
   title,
@@ -43,7 +44,7 @@ function BottomSheetHeader({
           alignItems: "center",
         }}
       >
-        <Image source={require("../assets/icons/close.png")} />
+        <CloseIcon stroke={Colors.neutral4} />
       </TouchableOpacity>
     </View>
   );

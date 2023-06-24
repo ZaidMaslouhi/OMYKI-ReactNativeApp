@@ -4,36 +4,40 @@ import { FlatList, View } from "react-native";
 import Colors from "../../theme/colors";
 import ModalInformation from "../../components/ModalInformation";
 import NotificationItem from "../../components/NotificationItem";
+import User from "../../interfaces/User";
 
 const NotificationsList = [
   {
     title: "Alex wants to give you access to The Gardens by Délicis residence",
     time: "6:05 am",
     user: {
-      fullName: "Alex Buckmaster",
+      firstName: "Alex",
+      lastName: "Buckmaster",
       email: "s.t.sharkey@outlook.com",
-      image: require("../../assets/icons/profile.png"),
-    },
+      image: require("../../assets/images/Profile.png"),
+    } as User,
   },
   {
     title: "Mary wants to give you access to Beaumont Green",
     time: "6:05 am",
     invitationStatus: "Accepted" as const,
     user: {
-      fullName: "Mary Freund",
+      firstName: "Mary",
+      lastName: "Freund",
       email: "dennis416@gmail.com",
-      image: require("../../assets/icons/profile.png"),
-    },
+      image: require("../../assets/images/Profile.png"),
+    } as User,
   },
   {
     title: "Alex wants to give you access to Les Mazets",
     time: "6:05 am",
     invitationStatus: "Rejected" as const,
     user: {
-      fullName: "Stephanie Sharkey",
+      firstName: "Stephanie",
+      lastName: "Sharkey",
       email: "k_pacheco@gmail.com",
-      image: require("../../assets/icons/profile.png"),
-    },
+      image: require("../../assets/images/Profile.png"),
+    } as User,
   },
 ];
 
@@ -52,10 +56,7 @@ function Notifications() {
           renderItem={({ item, index }) => (
             <NotificationItem
               key={index}
-              title={item.title}
-              time={item.time}
-              user={{ ...item.user }}
-              invitationStatus={item.invitationStatus}
+              item={item}
             />
           )}
         />
@@ -63,7 +64,7 @@ function Notifications() {
         <ModalInformation
           buttonText="Refresh"
           title="No notifications yet"
-          icon={require("../../assets/icons/notifications.png")}
+          icon={require("../../assets/images/Bell.png")}
           description="As soon as the key is shared with you, you will see notifications here."
           onPressButton={() => () => {}}
         />

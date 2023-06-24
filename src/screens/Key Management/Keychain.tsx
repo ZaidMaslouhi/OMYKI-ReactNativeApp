@@ -52,7 +52,7 @@ function Keychain() {
       ) : (
         <ModalInformation
           title="You do not have any keys"
-          icon={require("../../assets/icons/lock.png")}
+          icon={require("../../assets/images/Lock.png")}
           description="Sorry, you do not have access keys. Please contact your application administration to request access."
           onPressButton={() => () => {}}
         />

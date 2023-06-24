@@ -6,30 +6,33 @@ import { Fonts } from "../../theme/fonts";
 import SettingsNavItem from "../../components/SettingsNavItem";
 import { useNavigation } from "@react-navigation/native";
 import RootStackParamList from "../../interfaces/RootList";
+import KeyManagementIcon from "../../assets/icons/KeyManagement.svg";
+import SettingsIcon from "../../assets/icons/Setting.svg";
+import SupportIcon from "../../assets/icons/Support.svg";
+import SignOutIcon from "../../assets/icons/SignOut.svg";
 
 const SettingsNavItems = [
   {
     title: "Key management",
-    icon: require("../../assets/icons/key-management-settings.png"),
+    icon: <KeyManagementIcon stroke={Colors.dark} strokeWidth={1.5} />,
     color: Colors.dark,
     navigate: "KeyManagement" as keyof RootStackParamList,
   },
   {
     title: "General settings",
-    icon: require("../../assets/icons/settings.png"),
+    icon: <SettingsIcon stroke={Colors.dark} strokeWidth={1.5} />,
     color: Colors.dark,
     navigate: "GeneralSettings" as keyof RootStackParamList,
   },
   {
     title: "Support",
-    icon: require("../../assets/icons/support.png"),
+    icon: <SupportIcon stroke={Colors.dark} strokeWidth={1.5} />,
     color: Colors.dark,
     navigate: "Home" as keyof RootStackParamList,
   },
   {
     title: "Sign out",
-    icon: require("../../assets/icons/Sign-out.png"),
-    color: Colors.danger,
+    icon: <SignOutIcon stroke={Colors.danger} strokeWidth={1.5} />,
     navigate: "SignIn" as keyof RootStackParamList,
   },
 ];
@@ -44,7 +47,7 @@ function Settings() {
       <View style={{ gap: 8, padding: 16 }}>
         <View style={{ flexDirection: "row", gap: 16, paddingVertical: 16 }}>
           <View style={{ height: 46, width: 46, borderRadius: 16 }}>
-            <Image source={require("../../assets/icons/profile.png")} />
+            <Image source={require("../../assets/images/Profile.png")} />
           </View>
           <View style={{ gap: 8 }}>
             <Text
@@ -80,7 +83,6 @@ function Settings() {
               key={index}
               title={item.title}
               icon={item.icon}
-              color={item.color}
               onPress={() => navigation.navigate(item.navigate)}
             />
           )}

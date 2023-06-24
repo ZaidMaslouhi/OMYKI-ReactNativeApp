@@ -1,12 +1,7 @@
 import React from "react";
-import {
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  ImageSourcePropType,
-} from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import { Fonts } from "../theme/fonts";
+import Colors from "../theme/colors";
 
 function SettingsNavItem({
   title,
@@ -15,8 +10,8 @@ function SettingsNavItem({
   onPress,
 }: {
   title: string;
-  icon: ImageSourcePropType;
-  color: string;
+  icon: JSX.Element;
+  color?: string;
   onPress: () => void;
 }) {
   return (
@@ -31,7 +26,7 @@ function SettingsNavItem({
       <View>
         <Text
           style={{
-            color: color,
+            color: color ?? Colors.dark,
             fontFamily: Fonts.Family.brand,
             fontSize: Fonts.Size.font14,
             fontWeight: Fonts.Weight.semi,
@@ -40,9 +35,7 @@ function SettingsNavItem({
           {title}
         </Text>
       </View>
-      <View>
-        <Image source={icon} />
-      </View>
+      <View>{icon}</View>
     </TouchableOpacity>
   );
 }

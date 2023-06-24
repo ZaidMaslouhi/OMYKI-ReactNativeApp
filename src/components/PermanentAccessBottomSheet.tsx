@@ -3,13 +3,14 @@ import FormInput from "./FormInput";
 import PhoneNumberInput from "./PhoneNumberInput";
 import Button from "./Button";
 import BottomSheetComponent from "./BottomSheetComponent";
-import { Text, TextInput, View } from "react-native";
+import { Share, Text, TextInput, View } from "react-native";
 import HorizontalList from "./HorizontalList";
-import IconUserProfile from "../assets/icons/UserProfile.svg";
-import IconEmail from "../assets/icons/Email.svg";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import EmailIcon from "../assets/icons/Email.svg";
+import ImportIcon from "../assets/icons/Import.svg";
+import UserProfileIcon from "../assets/icons/UserProfile.svg";
 
 const Devices = [
   "Main entrance",
@@ -43,7 +44,10 @@ function PermanentAccessBottomSheet({
           <HorizontalList items={Devices} />
         </View>
 
-        <FormInput label={"First Name"} icon={<IconUserProfile />}>
+        <FormInput
+          label={"First Name"}
+          icon={<UserProfileIcon stroke={Colors.neutral} />}
+        >
           <TextInput
             placeholder="Enter your first name"
             style={{ fontFamily: Fonts.Family.brand }}
@@ -51,7 +55,10 @@ function PermanentAccessBottomSheet({
           />
         </FormInput>
 
-        <FormInput label={"Last Name"} icon={<IconUserProfile />}>
+        <FormInput
+          label={"Last Name"}
+          icon={<UserProfileIcon stroke={Colors.neutral} />}
+        >
           <TextInput
             placeholder="Enter your last Name"
             style={{ fontFamily: Fonts.Family.brand }}
@@ -61,7 +68,7 @@ function PermanentAccessBottomSheet({
 
         <PhoneNumberInput />
 
-        <FormInput label={"Email"} icon={<IconEmail />}>
+        <FormInput label={"Email"} icon={<EmailIcon stroke={Colors.neutral} />}>
           <TextInput
             placeholder="Enter your email"
             style={{ fontFamily: Fonts.Family.brand }}
@@ -74,10 +81,22 @@ function PermanentAccessBottomSheet({
             title="Import Сontact"
             primary
             outline
-            icon={require("../assets/icons/import.png")}
-            onPress={() => () => {}}
+            icon={<ImportIcon stroke={Colors.brand} />}
+            onPress={() => {}}
           />
-          <Button title="Send Invited" primary onPress={() => () => {}} />
+          <Button
+            title="Send Invited"
+            primary
+            onPress={async () => {
+              const result = await Share.share(
+                {
+                  message: `Access Key Shared with You: \nhttps://www.google.com/`,
+                },
+                { dialogTitle: "OMYKI | Share Your Access Key" }
+              );
+              console.log("Shared Key: ", result);
+            }}
+          />
         </View>
       </>
     </BottomSheetComponent>

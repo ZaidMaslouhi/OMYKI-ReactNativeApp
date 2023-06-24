@@ -1,8 +1,10 @@
 import React from "react";
 import Colors from "../theme/colors";
 import {
+  GestureResponderEvent,
   Image,
   ImageSourcePropType,
+  View,
   Text,
   TouchableOpacity,
 } from "react-native";
@@ -18,7 +20,7 @@ function Button({
   title: String;
   primary?: boolean;
   outline?: boolean;
-  icon?: ImageSourcePropType;
+  icon?: JSX.Element;
   onPress: () => void;
 }) {
   return (
@@ -43,7 +45,7 @@ function Button({
       }}
       onPress={onPress}
     >
-      {icon && <Image source={icon} />}
+      {icon && <View>{icon}</View>}
       <Text
         style={{
           color:

@@ -14,7 +14,7 @@ const Keys = [
         user: {
           fullName: "Bradley Lawlor",
           email: "c.a.glasser@outlook.com",
-          image: require("../../assets/icons/profile.png"),
+          image: require("../../assets/images/Profile.png"),
         },
       },
       {
@@ -22,7 +22,7 @@ const Keys = [
         user: {
           fullName: "Daniel Hamilton",
           email: "jerry73@aol.com",
-          image: require("../../assets/icons/profile.png"),
+          image: require("../../assets/images/Profile.png"),
         },
       },
     ],
@@ -35,7 +35,7 @@ const Keys = [
         user: {
           fullName: "David Elson",
           email: "k_pacheco@gmail.com",
-          image: require("../../assets/icons/profile.png"),
+          image: require("../../assets/images/Profile.png"),
         },
       },
     ],
@@ -48,7 +48,7 @@ const Keys = [
         user: {
           fullName: "James Hall",
           email: "james.hall@gmail.com",
-          image: require("../../assets/icons/profile.png"),
+          image: require("../../assets/images/Profile.png"),
         },
       },
     ],

@@ -12,9 +12,9 @@ const Keys = [
     appartments: 2,
     devices: 3,
     members: [
-      { uri: require("../../assets/icons/member1.png") },
-      { uri: require("../../assets/icons/member2.png") },
-      { uri: require("../../assets/icons/member3.png") },
+      { uri: require("../../assets/images/Member1.png") },
+      { uri: require("../../assets/images/Member2.png") },
+      { uri: require("../../assets/images/Member3.png") },
     ],
   },
   {
@@ -22,9 +22,9 @@ const Keys = [
     appartments: 1,
     devices: 2,
     members: [
-      { uri: require("../../assets/icons/member2.png") },
-      { uri: require("../../assets/icons/member1.png") },
-      { uri: require("../../assets/icons/member3.png") },
+      { uri: require("../../assets/images/Member2.png") },
+      { uri: require("../../assets/images/Member1.png") },
+      { uri: require("../../assets/images/Member3.png") },
     ],
   },
   {
@@ -32,9 +32,9 @@ const Keys = [
     appartments: 3,
     devices: 4,
     members: [
-      { uri: require("../../assets/icons/member3.png") },
-      { uri: require("../../assets/icons/member2.png") },
-      { uri: require("../../assets/icons/member1.png") },
+      { uri: require("../../assets/images/Member3.png") },
+      { uri: require("../../assets/images/Member2.png") },
+      { uri: require("../../assets/images/Member1.png") },
     ],
   },
 ];
@@ -66,7 +66,7 @@ function KeyManagement() {
         />
       ) : (
         <ModalInformation
-          icon={require("../../assets/icons/key.png")}
+          icon={require("../../assets/images/Key.png")}
           title="No shared keys"
           description="To share the key with your friends and colleagues, go to the Keychain page and click 'Share Access'."
           buttonText="Give permanent access"

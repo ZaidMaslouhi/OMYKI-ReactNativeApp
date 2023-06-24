@@ -2,6 +2,7 @@ import React from "react";
 import { Image, ImageSourcePropType, Text, View } from "react-native";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
+import ChevronRightIcon from "../assets/icons/ChevronRight.svg";
 
 function KeyManagmentItem({
   accessKey,
@@ -97,7 +98,7 @@ function KeyManagmentItem({
         </View>
       </View>
       <View style={{ justifyContent: "center" }}>
-        <Image source={require("../assets/icons/chevron-right.png")} />
+        <ChevronRightIcon stroke={Colors.neutral4} />
       </View>
     </View>
   );

@@ -3,6 +3,7 @@ import { Image, Text, View } from "react-native";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
 import User from "../interfaces/User";
+import TrashIcon from "../assets/icons/Trash.svg"
 
 function SharedKeysItem({
   accessKey,
@@ -44,7 +45,7 @@ function SharedKeysItem({
                 color: Colors.dark,
               }}
             >
-              {user.fullName}
+              {user.firstName + " " + user.lastName}
             </Text>
             <Text
               style={{
@@ -78,7 +79,7 @@ function SharedKeysItem({
         </View>
       </View>
       <View style={{ justifyContent: "center" }}>
-        <Image source={require("../assets/icons/trash.png")} />
+        <TrashIcon stroke={Colors.danger} />
       </View>
     </View>
   );

@@ -6,7 +6,8 @@ import LogoTitle from "../../components/LogoTitle";
 import Colors from "../../theme/colors";
 import { Fonts } from "../../theme/fonts";
 import { useNavigation } from "@react-navigation/native";
-import GoogleAuthService from "../../services/googleAuth";
+import GoogleIcon from "../../assets/icons/Google.svg";
+import AppleIcon from "../../assets/icons/Apple.svg";
 
 function SignUp() {
   const navigation = useNavigation();
@@ -21,7 +22,7 @@ function SignUp() {
       }}
     >
       <LogoTitle
-        logo={require("../../assets/icons/omyki-logo.gif")}
+        logo={require("../../assets/images/OmykiLogo.gif")}
         title={"Sign Up to Omyki"}
       />
 
@@ -30,11 +31,7 @@ function SignUp() {
       <Button
         title="Continue"
         primary
-        onPress={() => {
-          navigation.navigate("UserVerification", {
-            phoneNumber: "+212629843276",
-          });
-        }}
+        onPress={() => navigation.navigate("UserVerification")}
       />
 
       <View style={{ gap: 16 }}>
@@ -42,8 +39,8 @@ function SignUp() {
           <Text
             style={{
               color: Colors.dark,
-              fontSize: Fonts.Size.font16,
               fontFamily: Fonts.Family.brand,
+              fontSize: Fonts.Size.font16,
             }}
           >
             or
@@ -52,20 +49,14 @@ function SignUp() {
 
         <Button
           title="Sign Up with Google"
-          icon={require("../../assets/icons/google-icon.png")}
-          onPress={() => {
-            GoogleAuthService();
-          }}
+          icon={<GoogleIcon />}
+          onPress={() => navigation.navigate("UserVerification")}
         />
 
         <Button
           title="Sign Up with Apple"
-          icon={require("../../assets/icons/apple-icon.png")}
-          onPress={() =>
-            navigation.navigate("UserVerification", {
-              phoneNumber: "+212629843276",
-            })
-          }
+          icon={<AppleIcon />}
+          onPress={() => navigation.navigate("UserVerification")}
         />
       </View>
     </View>

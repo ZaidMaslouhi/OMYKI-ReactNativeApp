@@ -4,6 +4,8 @@ import Colors from "../theme/colors";
 import { ImageBackground } from "react-native";
 import { Fonts } from "../theme/fonts";
 import Key from "../interfaces/Key";
+import StarIcon from "../assets/icons/Star.svg";
+import HeartIcon from "../assets/icons/Heart.svg";
 
 const CarouselCardItem = ({ item, width }: { item: Key; width: number }) => {
   return (
@@ -29,10 +31,10 @@ const CarouselCardItem = ({ item, width }: { item: Key; width: number }) => {
           zIndex: 2,
         }}
       >
-        <Image source={require("../assets/icons/star.png")} />
+        <StarIcon fill={Colors.white} />
       </View>
       <ImageBackground
-        source={{ uri: item.imgUrl }}
+        source={item.imgUrl}
         resizeMode="cover"
         style={{
           position: "relative",
@@ -77,7 +79,10 @@ const CarouselCardItem = ({ item, width }: { item: Key; width: number }) => {
             alignItems: "center",
           }}
         >
-          <Image source={require("../assets/icons/heart.png")} />
+          <HeartIcon
+            fill={item.favorite ? Colors.white : "transparent"}
+            stroke={Colors.white}
+          />
         </View>
         <View
           style={{

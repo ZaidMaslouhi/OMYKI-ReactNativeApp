@@ -1,7 +1,8 @@
 import React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
+import ArrowLeftIcon from "../assets/icons/ArrowLeft.svg";
 
 function ActionBar({
   title,
@@ -15,7 +16,7 @@ function ActionBar({
   return (
     <View
       style={{
-        height: 110,
+        height: 60,
         flexDirection: "row",
         alignItems: "flex-end",
         gap: 5,
@@ -25,7 +26,7 @@ function ActionBar({
     >
       {withBack && (
         <TouchableOpacity onPress={onPress}>
-          <Image source={require("../assets/icons/arrow-left.png")} />
+          <ArrowLeftIcon stroke={Colors.white} strokeWidth={1.5} />
         </TouchableOpacity>
       )}
       <Text

@@ -6,7 +6,7 @@ function ConnectionFailed() {
     <ModalInformation
       buttonText="Refresh"
       title="Connection failed"
-      icon={require("../../assets/icons/connection-failed.png")}
+      icon={require("../../assets/images/ConnectionFailed.png")}
       description="Connection error. Try later or contact support."
       onPressButton={() => () => {}}
     />
