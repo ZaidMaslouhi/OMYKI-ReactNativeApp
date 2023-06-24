@@ -1,29 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Switch, Text, View } from "react-native";
 import ActionBar from "../../components/ActionBar";
 import SettingsNavItem from "../../components/SettingsNavItem";
 import Colors from "../../theme/colors";
 import { Fonts } from "../../theme/fonts";
 import { useNavigation } from "@react-navigation/native";
+import BinIcon from "../../assets/icons/Bin.svg";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type GeneralSettings = {
   openingNearby: boolean;
   notifications: boolean;
 };
+const generalSettings: GeneralSettings = {
+  openingNearby: false,
+  notifications: false,
+};
 
 function GeneralSettings() {
   const navigation = useNavigation();
-  const [switchStates, setSwitchStates] = useState<GeneralSettings>({
-    openingNearby: false,
-    notifications: true,
-  });
+  const [switchStates, setSwitchStates] =
+    useState<GeneralSettings>(generalSettings);
 
   const toggleSwitch = (property: keyof GeneralSettings) => {
+    saveGeneralSettings(switchStates);
     setSwitchStates((prevSwitchStates) => ({
       ...prevSwitchStates,
       [property]: !prevSwitchStates[property],
     }));
   };
+
+  const getGeneralSetting = async () => {
+    AsyncStorage.getItem("@GeneralSettings").then((GeneralSettingsJSON) => {
+      const generalSettingsData = GeneralSettingsJSON
+        ? JSON.parse(GeneralSettingsJSON)
+        : generalSettings;
+      setSwitchStates(generalSettingsData);
+    });
+  };
+
+  const saveGeneralSettings = async (settings: GeneralSettings) => {
+    await AsyncStorage.setItem("@GeneralSettings", JSON.stringify(settings));
+  };
+
+  useEffect(() => {
+    getGeneralSetting();
+  }, []);
+
+  useEffect(() => {
+    saveGeneralSettings(switchStates);
+  }, [switchStates]);
 
   return (
     <>
@@ -101,9 +127,9 @@ function GeneralSettings() {
         <View style={{ borderWidth: 1, borderColor: Colors.dark100 }}></View>
 
         <SettingsNavItem
-          color={Colors.danger}
           title={"Delete account"}
-          icon={require("../../assets/icons/bin.png")}
+          color={Colors.danger}
+          icon={<BinIcon stroke={Colors.danger} strokeWidth={1.5} />}
           onPress={() => () => {}}
         />
       </View>
