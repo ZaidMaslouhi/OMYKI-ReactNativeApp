@@ -2,6 +2,10 @@ import React from "react";
 import { Text, Image, View } from "react-native";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
+import DirectionIcon from "../assets/icons/Direction.svg";
+import LockedIcon from "../assets/icons/Locked.svg";
+import UnlockedIcon from "../assets/icons/Unlocked.svg";
+
 
 function KeyCard({
   keyName,
@@ -32,14 +36,14 @@ function KeyCard({
         }}
       >
         {isLocked ? (
-          <Image source={require("../assets/icons/locked.png")} />
+          <LockedIcon />
         ) : (
-          <Image source={require("../assets/icons/unlocking.png")} />
+          <UnlockedIcon />
         )}
 
         {isNearby && (
           <View style={{ flexDirection: "row", gap: 4, opacity: 0.5 }}>
-            <Image source={require("../assets/icons/navigation.png")} />
+            <DirectionIcon />
             <Text
               style={{
                 fontFamily: Fonts.Family.brand,

@@ -12,20 +12,19 @@ const Keys: Key[] = [
   {
     device: "Aenean leo",
     title: "Residence Mont Calm 1",
-    imgUrl:
-      "https://s3-alpha-sig.figma.com/img/0bcd/9782/45ff8376546fa1550db7b7bc7e5d497a?Expires=1686528000&Signature=Y758DUxbDO6-m9SR3k9qn~SIVKpZktxMql8VnelzhUR4TMOW9nV-7n5HJkVBr2y7Qt-6Y3Jf~Y5yFmt7-DEWk189H4b~O6gE6o79iqM9M6YAdZlXwgyaRh1mcAROh7l8fQ8b69G592R2WNs50TyTBu9dF1yD3Y5dRaJTVLX~lbIVzGPwt5EjsZhkGv1LWc1A53FjBpFWjAaC7a6wjtgG4cE-4x6Y3cPSKsBRd-dtCaeL9CMbtFFEMnBsHDdQGGi6eZDQL4Ss8xwlFJTmlVEz6Mq~3Aui5fTc63JueNVVz-gW3e-OwzwP-zcovJ2xlRoBF3fk7Zrt0l9aHwk-hGju8w__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
+    favorite: true,
+    imgUrl: require("../assets/images/ResidenceMontCalm1.jpg"),
   },
   {
     device: "Devices 3",
-    title: "Residence Mont Calm 1",
-    imgUrl:
-      "https://s3-alpha-sig.figma.com/img/deff/749e/40426b1a9a5adf37162f827fe65477f7?Expires=1686528000&Signature=dHvty6fZPwSNUXhRrP-AkexW009ZJ~gO9MbezbKcjCfJ6JEb0d27Y9bspFe683xXv~BuPnhEDGHA6PzBNnu3XjSZS16x-ZY~IgR6pV7JrUiyiaRhK4YI0Z1bAAIlKB4bQu7Qfr~U2wV6f9iB8Q8Veb5ecww~DwwpjaR6UMyk075oBuuWRihWRLrLHywSu7jK1pUJouwSIsoI0~RcQeBKy-XTZBueHFFCbbqKCOpiVYyjJY06w-Pgt5FGC5D8d1~LeR6gf~7X26-u~mcuvptD-CiDMEX7bShAv1yapiKrSxLGePvafoQjnEP0Mui3sPDm~gTxYFTcEz1xcFiNWL6kJg__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
+    title: "Residence Mont Calm 2",
+    favorite: false,
+    imgUrl: require("../assets/images/ResidenceMontCalm2.jpg"),
   },
   {
     device: "Lorem Ipsum",
-    title: "Residence Mont Calm 1",
-    imgUrl:
-      "https://s3-alpha-sig.figma.com/img/324b/d07b/1aa14a3320db6e5f0700dcd9f21bb2ae?Expires=1686528000&Signature=fag1Dp27LQE5J~uwK1DXy-~K4Kb0wBIyrz8sGpV6El8tvi9NpgPvUEgWENMUTUzyTpPdc8shh6bz7RTuWOZ~u6dzhuZAeyfqsoQ4iptmpsoveCrN~jBLY78~2LDfvInuuLxjGjXCLU1l7cHcINDiHjpvvkyXtVmEvPoWd-1px1~RZStIe01vqIAXkzgb7~nVnZDLGRW1unedRxiWDn0~cN84Xx8TjfEEWA~4fqofl9QjaTgDgFJAMoyyl3ANdY6oBNtzmo4Eb~-E5S6atolrktkB0xtbDEkxYsUuNPd5o0gyBVVTBPmebJY45NcqCmFmbPenghddhpfvpwK7Qm6Raw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
+    title: "Residence Mont Calm 3",
+    imgUrl: require("../assets/images/ResidenceMontCalm3.jpg"),
   },
 ];
 
