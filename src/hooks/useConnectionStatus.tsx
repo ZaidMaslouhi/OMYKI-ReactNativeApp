@@ -11,9 +11,9 @@ const useConnectionStatus = () => {
       if (!connectionInfo.isConnected) {
         navigation.navigate("ConnectionFailed");
       } else {
-        navigation.canGoBack()
-          ? navigation.goBack()
-          : navigation.navigate(INIT_ROUTE);
+        // navigation.canGoBack()
+        //   ? navigation.goBack()
+        //   : navigation.navigate(INIT_ROUTE);
       }
     });
     return () => unsubscribe();
