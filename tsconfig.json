@@ -2,7 +2,9 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
-    "declaration": true
+    "declaration": true,
+    "declarationDir": "./types"
   },
-  "include": ["declarations.d.ts", "images.d.ts", "**/*.ts", "**/*.tsx"]
+  "typeRoots": ["./types"],
+  "include": ["types/declarations.d.ts", "images.d.ts", "**/*.ts", "**/*.tsx"]
 }
