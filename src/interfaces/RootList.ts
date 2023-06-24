@@ -1,9 +1,11 @@
+import { UserInfo } from "firebase/auth";
+
 type RootStackParamList = {
   Home: undefined;
   SignUp: undefined;
   SignIn: undefined;
-  UserVerification: { phoneNumber: string };
-  PersonalInformation: undefined;
+  UserVerification: { verificationId: string; phoneNumber: string } | undefined;
+  PersonalInformation: { userInfo: UserInfo | null };
   Congratulations: undefined;
   KeyManagement: undefined;
   GeneralSettings: undefined;
