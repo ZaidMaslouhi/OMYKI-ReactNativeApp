@@ -1,105 +1,73 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Text,
-  TouchableWithoutFeedback,
-  View,
-  Pressable,
-  Keyboard,
-} from "react-native";
+import { Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import ActionBar from "../../components/ActionBar";
 import Colors from "../../theme/colors";
 import { Fonts } from "../../theme/fonts";
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import {
-  codeVerification,
-  sendPhoneNumberVerfication,
-} from "../../services/phoneAuth";
-import OTPInput from "../../components/OTPInput";
-import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
-import { firebaseConfig } from "../../config/firebase";
-import { ApplicationVerifier } from "firebase/auth";
+import { PhoneAuthProvider, signInWithCredential } from "firebase/auth";
+import { auth } from "../../config/firebase";
 
 function UserVerification({
   route,
 }: {
-  route: RouteProp<{ params: { phoneNumber: string } }, "params">;
+  route: RouteProp<
+    { params: { verificationId: string; phoneNumber: string } },
+    "params"
+  >;
 }) {
-  const verificationId = useRef<string | undefined>();
   const navigation = useNavigation();
-  const [timer, setTimer] = useState(20);
-  const timerRef = useRef(timer);
-  const recaptchaVerifier = useRef<FirebaseRecaptchaVerifierModal>(null);
+  const { verificationId, phoneNumber } = route.params;
+  const [timer, setTimer] = useState("10");
+  const timerRef = useRef<number>(Number(timer));
+  const [verificationCode, setVerificationCode] = useState("");
+  const inputsRef = useRef<TextInput[]>([]);
   const [invalid, setInvalid] = useState(false);
-  // useEffect(() => {
-  //   const timerId = setInterval(() => {
-  //     timerRef.current -= 1;
-  //     if (timerRef.current < 0) {
-  //       clearInterval(timerId);
-  //       const routes = navigation.getState()?.routes;
-  //       const prevRoute = routes[routes.length - 2];
-  //       if (prevRoute.name === "SignUp") {
-  //         navigation.navigate("PersonalInformation");
-  //       } else navigation.navigate("Home");
-  //     } else {
-  //       // if (timerRef.current < 10) setTimer("0" + timerRef.current);
-  //       // else
-  //       setTimer(timerRef.current);
-  //     }
-  //   }, 1000);
-
-  //   return () => {
-  //     clearInterval(timerId);
-  //   };
-  // }, []);
-
-  const [otpCode, setOTPCode] = useState("");
-  const [isPinReady, setIsPinReady] = useState(false);
-  const maximumCodeLength = 6;
-
-  const verifyPhoneNumber = async (
-    phoneNumber: string,
-    recapture: ApplicationVerifier
-  ) => {
-    verificationId.current = await sendPhoneNumberVerfication({
-      phoneNumber,
-      recaptureVerification: recapture,
-    });
-  };
-
-  const verifyOTPCode = async ({
-    verifId,
-    otp,
-  }: {
-    verifId: string;
-    otp: string;
-  }) => {
-    const isVerified = await codeVerification({
-      verificationId: verifId,
-      verificationCode: otp,
-    });
-    return isVerified;
-  };
 
   useEffect(() => {
-    if (isPinReady && verificationId.current) {
-      verifyOTPCode({
-        verifId: verificationId.current,
-        otp: otpCode,
-      })
-        .then(() => {
-          if (!invalid) navigation.navigate("PersonalInformation");
-        })
-        .catch(() => {
-          setInvalid(true);
+    const timerId = setInterval(() => {
+      timerRef.current -= 1;
+      if (timerRef.current < 0) {
+        clearInterval(timerId);
+        const routes = navigation.getState()?.routes;
+        const prevRoute = routes[routes.length - 2];
+        if (prevRoute.name === "SignUp") {
+          navigation.navigate("PersonalInformation");
+        }
+      } else {
+        if (timerRef.current < 10) setTimer("0" + timerRef.current);
+        else setTimer(timerRef.current.toString());
+      }
+    }, 1000);
+
+    setTimeout(() => {
+      if (inputsRef.current[0]) {
+        inputsRef.current[0].focus();
+      }
+    }, 100);
+
+    return () => {
+      clearInterval(timerId);
+    };
+  }, []);
+
+  const handleVerification = async (code: string) => {
+    console.log(code);
+
+    if (code.length === 6) {
+      try {
+        const credential = PhoneAuthProvider.credential(verificationId, code);
+        await signInWithCredential(auth, credential);
+        console.log("Phone authentication successful 👍");
+        navigation.navigate("Home");
+      } catch (err) {
+        setVerificationCode("");
+        inputsRef.current.forEach((inputRef) => {
+          inputRef.clear();
         });
+        setInvalid(true); // Set invalid to true when verification fails
+      }
     }
-  }, [isPinReady]);
-
-  useEffect(() => {
-    if (recaptchaVerifier.current) {
-      verifyPhoneNumber(route.params?.phoneNumber, recaptchaVerifier.current);
-    }
-  }, [route.params?.phoneNumber]);
+  };
 
   return (
     <>
@@ -137,41 +105,52 @@ function UserVerification({
             }}
           >
             We sent an SMS with a login code to the number{"\n"}
-            +33 205 422 570
+            {phoneNumber}
           </Text>
         </View>
 
         <View style={{ gap: 16, flexDirection: "row" }}>
-          <Pressable
-            style={{
-              flex: 1,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            onPress={Keyboard.dismiss}
-          >
-            <OTPInput
-              code={otpCode}
-              setCode={setOTPCode}
-              maximumLength={maximumCodeLength}
-              setIsPinReady={setIsPinReady}
+          {[1, 2, 3, 4, 5, 6].map((index) => (
+            <TextInput
+              key={index}
+              style={{
+                fontFamily: Fonts.Family.brand,
+                fontSize: Fonts.Size.font20,
+                fontWeight: Fonts.Weight.bold,
+              }}
+              cursorColor={Colors.brand}
+              keyboardType="numeric"
+              placeholder="0"
+              maxLength={1}
+              onChangeText={(value) => {
+                let code = verificationCode;
+                if (value !== "") {
+                  code =
+                    code.substring(0, index - 1) +
+                    value +
+                    code.substring(index);
+                } else {
+                  code = code.substring(0, index - 1) + code.substring(index);
+                }
+                setVerificationCode(code);
+                console.log(code);
+
+                if (code.length === 6) {
+                  handleVerification(code);
+                } else if (code.length < 6) {
+                  const nextIndex = index + 1;
+                  const followingInput = inputsRef.current[nextIndex];
+                  if (followingInput) {
+                    followingInput.focus();
+                  }
+                }
+              }}
+              ref={(ref) => (inputsRef.current[index] = ref!)}
             />
-          </Pressable>
+          ))}
         </View>
 
         {invalid ? (
-          <View>
-            <Text
-              style={{
-                color: Colors.neutral,
-                fontFamily: Fonts.Family.brand,
-                fontSize: Fonts.Size.font14,
-              }}
-            >
-              Get the code again after 00:{timer < 10 ? "0" + timer : timer}
-            </Text>
-          </View>
-        ) : (
           <View
             style={{
               flexDirection: "row",
@@ -189,8 +168,9 @@ function UserVerification({
             </Text>
             <TouchableWithoutFeedback
               onPress={() => {
-                timerRef.current = 20;
-                setTimer(20);
+                timerRef.current = 10;
+                setTimer("10");
+                setInvalid(false);
               }}
             >
               <Text
@@ -205,14 +185,45 @@ function UserVerification({
               </Text>
             </TouchableWithoutFeedback>
           </View>
+        ) : (
+          <View>
+            {timerRef.current === 0 ? (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text
+                  style={{
+                    color: Colors.brand,
+                    fontFamily: Fonts.Family.brand,
+                    fontSize: Fonts.Size.font14,
+                    textDecorationLine: "underline",
+                  }}
+                  onPress={() => {
+                    timerRef.current = 10;
+                    setTimer("10");
+                  }}
+                >
+                  Send again.
+                </Text>
+              </View>
+            ) : (
+              <Text
+                style={{
+                  color: Colors.neutral,
+                  fontFamily: Fonts.Family.brand,
+                  fontSize: Fonts.Size.font14,
+                }}
+              >
+                Get the code again after 00:
+                {Number(timer) < 10 ? "0" + timer : timer}
+              </Text>
+            )}
+          </View>
         )}
       </View>
-
-      <FirebaseRecaptchaVerifierModal
-        ref={recaptchaVerifier}
-        firebaseConfig={firebaseConfig}
-        // attemptInvisibleVerification={true}
-      />
     </>
   );
 }
