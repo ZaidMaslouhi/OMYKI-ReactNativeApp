@@ -1,9 +1,10 @@
 import React from "react";
-import { Image, Text, View } from "react-native";
+import { Text, View, Image } from "react-native";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
+import UserAddPlusIcon from "../assets/icons/UserAddPlus.svg";
 
-function EditProfileImage() {
+function EditProfileImage({ src }: { src: string }) {
   return (
     <View style={{ gap: 16 }}>
       <View
@@ -17,7 +18,14 @@ function EditProfileImage() {
           alignSelf: "center",
         }}
       >
-        <Image source={require("../assets/icons/single-user-add-plus.png")} />
+        {src ? (
+          <Image
+            source={{ uri: src }}
+            style={{ width: 72, height: 72, borderRadius: 72 / 2 }}
+          />
+        ) : (
+          <UserAddPlusIcon stroke={Colors.dark} />
+        )}
       </View>
 
       <View
