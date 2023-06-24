@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, SetStateAction, useState } from "react";
 import { View, Text, TextInput } from "react-native";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
@@ -7,8 +7,15 @@ import CountryPicker, {
   CountryCode,
 } from "react-native-country-picker-modal";
 
-const PhoneNumberInput = () => {
-  const [phoneNumber, setPhoneNumber] = useState("");
+const PhoneNumberInput = ({
+  phoneNumber,
+  errorMessage,
+  handleChange,
+}: {
+  phoneNumber?: string;
+  errorMessage?: string;
+  handleChange?: (text: string) => void;
+}) => {
   const [countryCode, setCountryCode] = useState<CountryCode>("FR");
 
   const selectCountry = (selectedCountry: Country) => {
@@ -26,54 +33,55 @@ const PhoneNumberInput = () => {
       >
         Phone number
       </Text>
-      <View
-        style={{
-          gap: 8,
-          flexDirection: "row",
-          alignItems: "center",
-          height: 60,
-          overflow: "hidden",
-        }}
-      >
-        <CountryPicker
-          onSelect={(value) => selectCountry(value)}
-          containerButtonStyle={{
-            borderWidth: 2,
-            borderColor: Colors.dark100,
-            borderRadius: 16,
-            backgroundColor: Colors.white,
-            paddingVertical: 12,
-            paddingHorizontal: 14,
-          }}
-          withEmoji
-          withFlag
-          withFlagButton
-          withCallingCode
-          withCallingCodeButton
-          withAlphaFilter
-          countryCode={countryCode}
-        />
+      <View>
         <View
           style={{
-            flex: 1,
-            borderWidth: 2,
-            borderColor: Colors.dark100,
-            borderRadius: 16,
-            backgroundColor: Colors.white,
-            paddingVertical: 16,
-            paddingHorizontal: 14,
+            gap: 8,
+            flexDirection: "row",
+            alignItems: "center",
+            height: 60,
+            overflow: "hidden",
           }}
         >
-          <TextInput
-            keyboardType="phone-pad"
-            value={phoneNumber}
-            onChange={(value) => setPhoneNumber(value.nativeEvent.text)}
-            placeholder="Enter your phone number"
-            style={{ fontFamily: Fonts.Family.brand }}
-            cursorColor={Colors.brand}
+          <CountryPicker
+            onSelect={(value) => selectCountry(value)}
+            containerButtonStyle={{
+              borderWidth: 2,
+              borderColor: Colors.dark100,
+              borderRadius: 16,
+              backgroundColor: Colors.white,
+              paddingVertical: 12,
+              paddingHorizontal: 14,
+            }}
+            withEmoji
+            withFlag
+            withFlagButton
+            withCallingCode
+            withCallingCodeButton
+            withAlphaFilter
+            countryCode={countryCode}
           />
+          <View
+            style={{
+              flex: 1,
+              borderWidth: 2,
+              borderColor: Colors.dark100,
+              borderRadius: 16,
+              backgroundColor: Colors.white,
+              paddingVertical: 16,
+              paddingHorizontal: 14,
+            }}
+          >
+            <TextInput
+              keyboardType="phone-pad"
+              value={phoneNumber}
+              onChangeText={handleChange}
+              placeholder="Enter your phone number"
+              style={{ fontFamily: Fonts.Family.brand }}
+              cursorColor={Colors.brand}
+            />
 
-          {/* <PhoneInput
+            {/* <PhoneInput
             ref={phoneNumberInput}
             value={phoneNumber}
             autoFormat={false}
@@ -96,7 +104,13 @@ const PhoneNumberInput = () => {
               cursorColor: Colors.brand
             }}
           /> */}
+          </View>
         </View>
+        {errorMessage && (
+          <Text style={{ color: Colors.danger, fontSize: Fonts.Size.font12 }}>
+            {errorMessage}
+          </Text>
+        )}
       </View>
     </View>
   );
