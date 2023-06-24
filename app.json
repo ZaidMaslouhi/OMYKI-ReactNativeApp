@@ -13,7 +13,9 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.zaid.thewebsight.omyki",
+      "useFrameworks": "static"
     },
     "android": {
       "package": "com.omyki.app",
@@ -26,6 +28,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "scheme": "omyki",
     "extra": {
       "eas": {
         "projectId": "7ea3ee0c-0af9-41fa-ba1c-5efb67cc0f63"
