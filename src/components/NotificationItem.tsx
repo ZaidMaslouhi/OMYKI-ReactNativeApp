@@ -1,20 +1,20 @@
-import React from "react";
-import { Image, ImageSourcePropType, Text, View } from "react-native";
+import React, { useState } from "react";
 import Colors from "../theme/colors";
-import { Fonts } from "../theme/fonts";
-import NotificationButtons from "./NotificationButtons";
 import User from "../interfaces/User";
+import { Fonts } from "../theme/fonts";
+import { Image, Text, View } from "react-native";
+import AcceptedIcon from "../assets/icons/Accepted.svg";
+import RejectedIcon from "../assets/icons/Rejected.svg";
+import Button from "./Button";
 
 function InvitationMessage({ status }: { status: "Accepted" | "Rejected" }) {
   return (
-    <>
-      <Image
-        source={
-          status === "Accepted"
-            ? require("../assets/icons/invitation-accepted.png")
-            : require("../assets/icons/invitation-rejected.png")
-        }
-      />
+    <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
+      {status === "Accepted" ? (
+        <AcceptedIcon stroke={Colors.success} />
+      ) : (
+        <RejectedIcon stroke={Colors.danger} />
+      )}
       <Text
         style={{
           color: status === "Accepted" ? Colors.success : Colors.danger,
@@ -24,21 +24,24 @@ function InvitationMessage({ status }: { status: "Accepted" | "Rejected" }) {
       >
         Invitation {status === "Accepted" ? "Accepted" : "Rejected"}
       </Text>
-    </>
+    </View>
   );
 }
 
 function NotificationItem({
-  title,
-  time,
-  user,
-  invitationStatus,
+  item,
 }: {
-  title: string;
-  time: string;
-  user: User;
-  invitationStatus?: "Accepted" | "Rejected";
+  item: {
+    title: string;
+    time: string;
+    user: User;
+    invitationStatus?: "Accepted" | "Rejected";
+  };
 }) {
+  const [invitation, setInvitation] = useState<
+    typeof item.invitationStatus | undefined
+  >(item.invitationStatus);
+
   return (
     <View style={{ gap: 16, padding: 16 }}>
       <View
@@ -57,7 +60,7 @@ function NotificationItem({
           }}
         >
           <Image
-            source={user.image}
+            source={item.user.image}
             style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
           />
           <View style={{ gap: 4 }}>
@@ -68,7 +71,7 @@ function NotificationItem({
                 color: Colors.dark,
               }}
             >
-              {user.fullName}
+              {item.user.firstName + " " + item.user.lastName}
             </Text>
             <Text
               style={{
@@ -77,7 +80,7 @@ function NotificationItem({
                 color: Colors.neutral,
               }}
             >
-              {user.email}
+              {item.user.email}
             </Text>
           </View>
         </View>
@@ -89,7 +92,7 @@ function NotificationItem({
               color: Colors.dark,
             }}
           >
-            {time}
+            {item.time}
           </Text>
         </View>
       </View>
@@ -102,16 +105,35 @@ function NotificationItem({
             color: Colors.dark,
           }}
         >
-          {title}
+          {item.title}
         </Text>
       </View>
 
-      {typeof invitationStatus !== "undefined" ? (
-        <View style={{ flexDirection: "row", gap: 4 }}>
-          <InvitationMessage status={invitationStatus} />
-        </View>
+      {typeof invitation !== "undefined" ? (
+        <InvitationMessage status={invitation} />
       ) : (
-        <NotificationButtons />
+        <View
+          style={{
+            flexDirection: "row",
+            gap: 16,
+          }}
+        >
+          <View style={{ flex: 1 }}>
+            <Button
+              title="Accept"
+              primary
+              onPress={() => setInvitation("Accepted")}
+            />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Button
+              title="Decline"
+              primary
+              outline
+              onPress={() => setInvitation("Rejected")}
+            />
+          </View>
+        </View>
       )}
     </View>
   );
