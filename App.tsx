@@ -8,9 +8,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import Navigator from "./src/navigation";
 import Colors from "./src/theme/colors";
 import { useAuthentication } from "./src/hooks/useAuthentication";
+import useNotificationMessaging from "./src/hooks/useNotificationMessaging";
+import { Provider } from "react-redux";
+import { store } from "./src/store";
 
 export default function App() {
   const fontsLoaded = useCustomFonts();
+  useNotificationMessaging();
   const { user } = useAuthentication();
 
   const onLayoutRootView = useCallback(async () => {
@@ -24,16 +28,18 @@ export default function App() {
   }
 
   return (
-    <View
-      style={styles.container}
-      onLayout={() => {
-        void onLayoutRootView();
-      }}
-    >
-      <NavigationContainer>
-        <Navigator />
-      </NavigationContainer>
-    </View>
+    <Provider store={store}>
+      <View
+        style={styles.container}
+        onLayout={() => {
+          void onLayoutRootView();
+        }}
+      >
+        <NavigationContainer>
+          <Navigator />
+        </NavigationContainer>
+      </View>
+    </Provider>
   );
 }
 
