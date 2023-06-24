@@ -1,12 +1,13 @@
 import React from "react";
-import { Image } from "react-native";
 import Colors from "../theme/colors";
-import IconSettings from "../assets/icons/Settings.svg";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Fonts } from "../theme/fonts";
+import Settings from "../screens/Settings/Settings";
 import Keychain from "../screens/Key Management/Keychain";
 import Notifications from "../screens/Notifications/Notifications";
-import Settings from "../screens/Settings/Settings";
-import { Fonts } from "../theme/fonts";
+import BellIcon from "../assets/icons/Bell.svg";
+import SettingIcon from "../assets/icons/Setting.svg";
+import KeychainIcon from "../assets/icons/Keychain.svg";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Tab = createBottomTabNavigator();
 
@@ -14,24 +15,25 @@ function Home() {
   return (
     <Tab.Navigator
       initialRouteName="Keychain"
-      // activeColor={Colors.brand}
-      // inactiveColor={Colors.neutral}
-      screenOptions={{ headerShown: false }}
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: { paddingBottom: 5 },
+        tabBarInactiveTintColor: Colors.neutral,
+        tabBarActiveTintColor: Colors.brand,
+        tabBarLabelStyle: {
+          fontFamily: Fonts.Family.brand,
+          fontSize: Fonts.Size.font10,
+          fontWeight: Fonts.Weight.bold,
+        },
+      }}
     >
       <Tab.Screen
         name="Keychain"
         component={Keychain}
         options={{
-          tabBarActiveTintColor: Colors.brand,
-          tabBarInactiveTintColor: Colors.neutral,
           tabBarLabel: "Keychain",
-          tabBarLabelStyle: {
-            fontFamily: Fonts.Family.brand,
-            fontSize: Fonts.Size.font10,
-            fontWeight: Fonts.Weight.bold,
-          },
-          tabBarIcon: ({ color, size }) => (
-            <Image source={require("../assets/icons/keychain-tabBar.png")} />
+          tabBarIcon: ({ color }) => (
+            <KeychainIcon stroke={color} strokeWidth={1.5} />
           ),
         }}
       />
@@ -39,16 +41,15 @@ function Home() {
         name="Notifications"
         component={Notifications}
         options={{
-          tabBarActiveTintColor: Colors.brand,
-          tabBarInactiveTintColor: Colors.neutral,
           tabBarLabel: "Notifications",
-          tabBarLabelStyle: {
-            fontFamily: Fonts.Family.brand,
-            fontSize: Fonts.Size.font10,
-            fontWeight: Fonts.Weight.bold,
+          tabBarBadge: "",
+          tabBarBadgeStyle: {
+            maxWidth: 5,
+            maxHeight: 8,
+            backgroundColor: Colors.danger,
           },
-          tabBarIcon: ({ color, size }) => (
-            <Image source={require("../assets/icons/bell-notifications.png")} />
+          tabBarIcon: ({ color }) => (
+            <BellIcon stroke={color} strokeWidth={1.5} />
           ),
         }}
       />
@@ -56,15 +57,10 @@ function Home() {
         name="Settings"
         component={Settings}
         options={{
-          tabBarActiveTintColor: Colors.brand,
-          tabBarInactiveTintColor: Colors.neutral,
           tabBarLabel: "Settings",
-          tabBarLabelStyle: {
-            fontFamily: Fonts.Family.brand,
-            fontSize: Fonts.Size.font10,
-            fontWeight: Fonts.Weight.bold,
-          },
-          tabBarIcon: ({ color, size }) => <IconSettings />,
+          tabBarIcon: ({ color }) => (
+            <SettingIcon stroke={color} strokeWidth={1.5} />
+          ),
         }}
       />
     </Tab.Navigator>
