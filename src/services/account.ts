@@ -1,26 +1,26 @@
 import axios from "axios";
 import { API_BASE } from "@env";
-import User from "../interfaces/User";
+import { UserProfile } from "../interfaces/User";
 
 const UpdateUserProfile = async ({
-  user,
+  profile,
   rankPlaces,
 }: {
-  user: User;
+  profile: UserProfile;
   rankPlaces: string[];
 }) => {
   try {
     const response = await axios.put(
       `${API_BASE}/configuration/user/profile/`,
       JSON.stringify({
-        pictureProfile: user.image.toString(),
+        pictureProfile: profile.pictureProfile.toString(),
         userDto: {
-          id: user.id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          phoneNumber: user.phoneNumber,
-          indicativeNumber: user.indicativeNumber,
-          email: user.email,
+          id: profile.user.id,
+          firstName: profile.user.firstName,
+          lastName: profile.user.lastName,
+          phoneNumber: profile.user.phoneNumber,
+          indicativeNumber: profile.user.indicativeNumber,
+          email: profile.user.email,
         },
         rankPlaces,
       }),
