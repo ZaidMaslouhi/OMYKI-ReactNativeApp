@@ -7,7 +7,21 @@ interface User {
   email: string;
   phoneNumber: string;
   indicativeNumber: string;
-  image: ImageSourcePropType;
+  rankPlaces?: string[];
 }
 
-export default User;
+interface UserProfile {
+  user: User;
+  pictureProfile: ImageSourcePropType;
+  rankPlaces?: string[];
+}
+
+interface UserRequested {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  indicativeNumber: string;
+}
+
+export { User, UserProfile, UserRequested };
