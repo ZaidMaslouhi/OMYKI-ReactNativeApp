@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API_BASE } from "@env";
-import User from "../interfaces/User";
+import { UserRequested } from "../interfaces/User";
 
 const ShareTemporarily = async ({
   id,
@@ -56,7 +56,7 @@ const RequestSharePermanently = async ({
   fromUserId: string;
   requestedPlaceId: string;
   actionsIds: string[];
-  userRequested: User;
+  userRequested: UserRequested;
 }) => {
   try {
     const response = await axios.put(
