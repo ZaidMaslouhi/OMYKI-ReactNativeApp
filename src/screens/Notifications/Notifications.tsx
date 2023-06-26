@@ -4,40 +4,58 @@ import { FlatList, View } from "react-native";
 import Colors from "../../theme/colors";
 import ModalInformation from "../../components/ModalInformation";
 import NotificationItem from "../../components/NotificationItem";
-import User from "../../interfaces/User";
+import Notification from "../../interfaces/Notification";
 
-const NotificationsList = [
+const NotificationsList: Notification[] = [
   {
+    id: "",
     title: "Alex wants to give you access to The Gardens by Délicis residence",
-    time: "6:05 am",
-    user: {
-      firstName: "Alex",
-      lastName: "Buckmaster",
-      email: "s.t.sharkey@outlook.com",
-      image: require("../../assets/images/Profile.png"),
-    } as User,
+    time: new Date(Date.parse("26/06/2022 6:05 am")),
+    fromUser: {
+      user: {
+        id: "",
+        phoneNumber: "",
+        indicativeNumber: "",
+        firstName: "Alex",
+        lastName: "Buckmaster",
+        email: "s.t.sharkey@outlook.com",
+      },
+      pictureProfile: require("../../assets/images/Profile.png"),
+    },
   },
   {
+    id: "",
     title: "Mary wants to give you access to Beaumont Green",
-    time: "6:05 am",
-    invitationStatus: "Accepted" as const,
-    user: {
-      firstName: "Mary",
-      lastName: "Freund",
-      email: "dennis416@gmail.com",
-      image: require("../../assets/images/Profile.png"),
-    } as User,
+    time: new Date(Date.parse("26/06/2022 6:05 am")),
+    invitationStatus: "Accepted",
+    fromUser: {
+      user: {
+        id: "",
+        phoneNumber: "",
+        indicativeNumber: "",
+        firstName: "Mary",
+        lastName: "Freund",
+        email: "dennis416@gmail.com",
+      },
+      pictureProfile: require("../../assets/images/Profile.png"),
+    },
   },
   {
+    id: "",
     title: "Alex wants to give you access to Les Mazets",
-    time: "6:05 am",
-    invitationStatus: "Rejected" as const,
-    user: {
-      firstName: "Stephanie",
-      lastName: "Sharkey",
-      email: "k_pacheco@gmail.com",
-      image: require("../../assets/images/Profile.png"),
-    } as User,
+    time: new Date(Date.parse("26/06/2022 6:05 am")),
+    invitationStatus: "Rejected",
+    fromUser: {
+      user: {
+        id: "",
+        phoneNumber: "",
+        indicativeNumber: "",
+        firstName: "Stephanie",
+        lastName: "Sharkey",
+        email: "k_pacheco@gmail.com",
+      },
+      pictureProfile: require("../../assets/images/Profile.png"),
+    },
   },
 ];
 
@@ -54,10 +72,7 @@ function Notifications() {
             <View style={{ height: 1, backgroundColor: Colors.dark100 }} />
           )}
           renderItem={({ item, index }) => (
-            <NotificationItem
-              key={index}
-              item={item}
-            />
+            <NotificationItem key={index} item={item} />
           )}
         />
       ) : (
