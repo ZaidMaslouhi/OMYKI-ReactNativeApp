@@ -1,15 +1,15 @@
-import User from "../../interfaces/User";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   GetUserProfile,
   DisableAccount,
   UpdateUserProfile,
 } from "../../services/account";
+import { UserProfile } from "../../interfaces/User";
 
 const updateUserProfileThunk = createAsyncThunk(
   "configuration/UpdateUserProfile",
-  async ({ user, rankPlaces }: { user: User; rankPlaces: string[] }) => {
-    const response = await UpdateUserProfile({ user, rankPlaces });
+  async ({ profile, rankPlaces }: { profile: UserProfile; rankPlaces: string[] }) => {
+    const response = await UpdateUserProfile({ profile, rankPlaces });
     return response.success;
   }
 );
