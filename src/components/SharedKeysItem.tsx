@@ -2,15 +2,15 @@ import React from "react";
 import { Image, Text, View } from "react-native";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
-import User from "../interfaces/User";
 import TrashIcon from "../assets/icons/Trash.svg"
+import { UserProfile } from "../interfaces/User";
 
 function SharedKeysItem({
   accessKey,
-  user,
+  profile,
 }: {
   accessKey: string;
-  user: User;
+  profile: UserProfile;
 }) {
   return (
     <View
@@ -34,7 +34,7 @@ function SharedKeysItem({
           }}
         >
           <Image
-            source={user.image}
+            source={profile.pictureProfile}
             style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
           />
           <View style={{ gap: 4 }}>
@@ -45,7 +45,7 @@ function SharedKeysItem({
                 color: Colors.dark,
               }}
             >
-              {user.firstName + " " + user.lastName}
+              {profile.user.firstName + " " + profile.user.lastName}
             </Text>
             <Text
               style={{
@@ -54,7 +54,7 @@ function SharedKeysItem({
                 color: Colors.neutral,
               }}
             >
-              {user.email}
+              {profile.user.email}
             </Text>
           </View>
         </View>
