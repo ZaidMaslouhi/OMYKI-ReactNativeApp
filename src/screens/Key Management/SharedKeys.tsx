@@ -4,6 +4,7 @@ import { SectionList, Text, View } from "react-native";
 import SharedKeysItem from "../../components/SharedKeysItem";
 import { Fonts } from "../../theme/fonts";
 import { useNavigation } from "@react-navigation/native";
+import { UserProfile } from "../../interfaces/User";
 
 const Keys = [
   {
@@ -11,19 +12,25 @@ const Keys = [
     data: [
       {
         key: "key 1",
-        user: {
-          fullName: "Bradley Lawlor",
-          email: "c.a.glasser@outlook.com",
-          image: require("../../assets/images/Profile.png"),
-        },
+        profile: {
+          user: {
+            firstName: "Bradley",
+            lastName: "Lawlor",
+            email: "c.a.glasser@outlook.com",
+          },
+          pictureProfile: require("../../assets/images/Profile.png"),
+        } as UserProfile,
       },
       {
         key: "key 2",
-        user: {
-          fullName: "Daniel Hamilton",
-          email: "jerry73@aol.com",
-          image: require("../../assets/images/Profile.png"),
-        },
+        profile: {
+          user: {
+            firstName: "Daniel",
+            lastName: "Hamilton",
+            email: "jerry73@aol.com",
+          },
+          pictureProfile: require("../../assets/images/Profile.png"),
+        } as UserProfile,
       },
     ],
   },
@@ -32,11 +39,14 @@ const Keys = [
     data: [
       {
         key: "key 4",
-        user: {
-          fullName: "David Elson",
-          email: "k_pacheco@gmail.com",
-          image: require("../../assets/images/Profile.png"),
-        },
+        profile: {
+          user: {
+            firstName: "David",
+            lastName: "Elson",
+            email: "k_pacheco@gmail.com",
+          },
+          pictureProfile: require("../../assets/images/Profile.png"),
+        } as UserProfile,
       },
     ],
   },
@@ -45,11 +55,14 @@ const Keys = [
     data: [
       {
         key: "key 5",
-        user: {
-          fullName: "James Hall",
-          email: "james.hall@gmail.com",
-          image: require("../../assets/images/Profile.png"),
-        },
+        profile: {
+          user: {
+            firstName: "James",
+            lastName: "Hall",
+            email: "james.hall@gmail.com",
+          },
+          pictureProfile: require("../../assets/images/Profile.png"),
+        } as UserProfile,
       },
     ],
   },
@@ -83,7 +96,7 @@ function SharedKeys() {
           </Text>
         )}
         renderItem={({ item }) => (
-          <SharedKeysItem accessKey={item.key} user={item.user} />
+          <SharedKeysItem accessKey={item.key} profile={item.profile} />
         )}
       />
     </>
