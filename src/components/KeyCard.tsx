@@ -35,11 +35,7 @@ function KeyCard({
           justifyContent: "space-between",
         }}
       >
-        {isLocked ? (
-          <LockedIcon />
-        ) : (
-          <UnlockedIcon />
-        )}
+        {isLocked ? <LockedIcon /> : <UnlockedIcon />}
 
         {isNearby && (
           <View style={{ flexDirection: "row", gap: 4, opacity: 0.5 }}>

@@ -3,11 +3,11 @@ import { Image, Text, View } from "react-native";
 import Colors from "../theme/colors";
 import { ImageBackground } from "react-native";
 import { Fonts } from "../theme/fonts";
-import Key from "../interfaces/Key";
 import StarIcon from "../assets/icons/Star.svg";
 import HeartIcon from "../assets/icons/Heart.svg";
+import Place from "../interfaces/Place";
 
-const CarouselCardItem = ({ item, width }: { item: Key; width: number }) => {
+const CarouselCardItem = ({ item, width }: { item: Place; width: number }) => {
   return (
     <View
       style={{
@@ -34,7 +34,7 @@ const CarouselCardItem = ({ item, width }: { item: Key; width: number }) => {
         <StarIcon fill={Colors.white} />
       </View>
       <ImageBackground
-        source={item.imgUrl}
+        source={{ uri: item.placePictureUrl }}
         resizeMode="cover"
         style={{
           position: "relative",
@@ -52,7 +52,7 @@ const CarouselCardItem = ({ item, width }: { item: Key; width: number }) => {
               color: Colors.white,
             }}
           >
-            {item.device}
+            Devices {item.actions.length}
           </Text>
           <Text
             style={{
@@ -62,7 +62,7 @@ const CarouselCardItem = ({ item, width }: { item: Key; width: number }) => {
               color: Colors.white,
             }}
           >
-            {item.title}
+            {item.name}
           </Text>
         </View>
         <View
@@ -80,7 +80,8 @@ const CarouselCardItem = ({ item, width }: { item: Key; width: number }) => {
           }}
         >
           <HeartIcon
-            fill={item.favorite ? Colors.white : "transparent"}
+            // fill={item.favorite ? Colors.white : "transparent"}
+            fill={item.actions ? Colors.white : "transparent"}
             stroke={Colors.white}
           />
         </View>
