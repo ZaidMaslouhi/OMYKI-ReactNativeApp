@@ -70,13 +70,19 @@ function TimeAccessBottomSheet({
             Access duration
           </Text>
           <FlatList
-            contentContainerStyle={{
+            horizontal={true}
+            scrollEnabled={false}
+            style={{
               backgroundColor: Colors.neutral3,
-              borderRadius: 16,
               overflow: "hidden",
-              flexDirection: "row",
+              borderRadius: 32,
+            }}
+            contentContainerStyle={{
+              flex: 1,
+              borderRadius: 32,
+              borderWidth: 2,
               justifyContent: "space-between",
-              alignItems: "center",
+              alignItems: "stretch",
             }}
             data={AccessDuration}
             keyExtractor={(_, index) => index.toString()}
@@ -88,9 +94,11 @@ function TimeAccessBottomSheet({
                   paddingHorizontal: 16,
                   paddingVertical: 8,
                   borderRadius: 16,
-                  borderWidth: activeAccessDuration === index ? 2 : 0,
+                  borderWidth: 2,
                   borderColor:
-                    activeAccessDuration === index ? Colors.brand : Colors.dark,
+                    activeAccessDuration === index
+                      ? Colors.brand
+                      : Colors.neutral3,
                 }}
               >
                 <Text
