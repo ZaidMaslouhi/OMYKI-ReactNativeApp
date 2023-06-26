@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Colors from "../theme/colors";
-import User from "../interfaces/User";
 import { Fonts } from "../theme/fonts";
 import { Image, Text, View } from "react-native";
 import AcceptedIcon from "../assets/icons/Accepted.svg";
 import RejectedIcon from "../assets/icons/Rejected.svg";
 import Button from "./Button";
+import Notification from "../interfaces/Notification";
 
 function InvitationMessage({ status }: { status: "Accepted" | "Rejected" }) {
   return (
@@ -28,16 +28,7 @@ function InvitationMessage({ status }: { status: "Accepted" | "Rejected" }) {
   );
 }
 
-function NotificationItem({
-  item,
-}: {
-  item: {
-    title: string;
-    time: string;
-    user: User;
-    invitationStatus?: "Accepted" | "Rejected";
-  };
-}) {
+function NotificationItem({ item }: { item: Notification }) {
   const [invitation, setInvitation] = useState<
     typeof item.invitationStatus | undefined
   >(item.invitationStatus);
@@ -60,7 +51,7 @@ function NotificationItem({
           }}
         >
           <Image
-            source={item.user.image}
+            source={item.fromUser.pictureProfile}
             style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
           />
           <View style={{ gap: 4 }}>
@@ -71,7 +62,7 @@ function NotificationItem({
                 color: Colors.dark,
               }}
             >
-              {item.user.firstName + " " + item.user.lastName}
+              {item.fromUser.user.firstName + " " + item.fromUser.user.lastName}
             </Text>
             <Text
               style={{
@@ -80,7 +71,7 @@ function NotificationItem({
                 color: Colors.neutral,
               }}
             >
-              {item.user.email}
+              {item.fromUser.user.email}
             </Text>
           </View>
         </View>
@@ -92,7 +83,7 @@ function NotificationItem({
               color: Colors.dark,
             }}
           >
-            {item.time}
+            {item.time.toString()}
           </Text>
         </View>
       </View>
