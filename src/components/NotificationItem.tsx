@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
 import { Image, Text, View } from "react-native";
@@ -32,6 +32,23 @@ function NotificationItem({ item }: { item: Notification }) {
   const [invitation, setInvitation] = useState<
     typeof item.invitationStatus | undefined
   >(item.invitationStatus);
+
+  const timeString = useRef("now");
+
+  useEffect(() => {
+    let hours = item.time.getHours();
+    let period = "AM";
+    if (hours >= 12) {
+      period = "PM";
+      if (hours > 12) {
+        hours -= 12;
+      }
+    }
+    const minutes = item.time.getMinutes();
+    timeString.current = `${hours}:${
+      minutes < 10 ? "0" + minutes : minutes
+    } ${period}`;
+  }, []);
 
   return (
     <View style={{ gap: 16, padding: 16 }}>
@@ -83,7 +100,7 @@ function NotificationItem({ item }: { item: Notification }) {
               color: Colors.dark,
             }}
           >
-            {item.time.toString()}
+            {timeString.current }
           </Text>
         </View>
       </View>

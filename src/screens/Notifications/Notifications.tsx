@@ -10,7 +10,7 @@ const NotificationsList: Notification[] = [
   {
     id: "",
     title: "Alex wants to give you access to The Gardens by Délicis residence",
-    time: new Date(Date.parse("26/06/2022 6:05 am")),
+    time: new Date(new Date().setHours(12, 30)),
     fromUser: {
       user: {
         id: "",
@@ -26,7 +26,7 @@ const NotificationsList: Notification[] = [
   {
     id: "",
     title: "Mary wants to give you access to Beaumont Green",
-    time: new Date(Date.parse("26/06/2022 6:05 am")),
+    time: new Date(new Date().setHours(13, 45)),
     invitationStatus: "Accepted",
     fromUser: {
       user: {
@@ -43,7 +43,7 @@ const NotificationsList: Notification[] = [
   {
     id: "",
     title: "Alex wants to give you access to Les Mazets",
-    time: new Date(Date.parse("26/06/2022 6:05 am")),
+    time: new Date(new Date().setHours(6, 5)),
     invitationStatus: "Rejected",
     fromUser: {
       user: {
@@ -71,6 +71,7 @@ function Notifications() {
           ItemSeparatorComponent={() => (
             <View style={{ height: 1, backgroundColor: Colors.dark100 }} />
           )}
+          keyExtractor={(_, index) => index.toString()}
           renderItem={({ item, index }) => (
             <NotificationItem key={index} item={item} />
           )}
