@@ -2,7 +2,7 @@ import "expo-dev-client";
 import "react-native-gesture-handler";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useCallback } from "react";
-import { StyleSheet, View } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import useCustomFonts from "./src/hooks/useCustomFonts";
 import { NavigationContainer } from "@react-navigation/native";
 import Navigator from "./src/navigation";
@@ -29,7 +29,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <View
+      <SafeAreaView
         style={styles.container}
         onLayout={() => {
           void onLayoutRootView();
@@ -38,7 +38,7 @@ export default function App() {
         <NavigationContainer>
           <Navigator />
         </NavigationContainer>
-      </View>
+      </SafeAreaView>
     </Provider>
   );
 }
