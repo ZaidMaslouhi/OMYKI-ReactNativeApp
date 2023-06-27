@@ -33,7 +33,7 @@ const BottomSheetComponent = ({
       >
         <BottomSheetModal
           ref={bottomSheetRef}
-          snapPoints={["75%"]}
+          snapPoints={["90%"]}
           onDismiss={closeBottomSheet}
           handleComponent={() => (
             <View style={styles.handle}>
