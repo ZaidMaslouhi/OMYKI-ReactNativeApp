@@ -1,10 +1,10 @@
 import React from "react";
-import { Image, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import Colors from "../theme/colors";
 import { ImageBackground } from "react-native";
 import { Fonts } from "../theme/fonts";
 import StarIcon from "../assets/icons/Star.svg";
-import HeartIcon from "../assets/icons/Heart.svg";
+import FavStar from "../assets/icons/FavStar.svg";
 import Place from "../interfaces/Place";
 
 const CarouselCardItem = ({ item, width }: { item: Place; width: number }) => {
@@ -79,8 +79,8 @@ const CarouselCardItem = ({ item, width }: { item: Place; width: number }) => {
             alignItems: "center",
           }}
         >
-          <HeartIcon
-            // fill={item.favorite ? Colors.white : "transparent"}
+          <FavStar
+            // fill={item.user.rankPlaces.filter((place)=>place.id) ? Colors.white : "transparent"}
             fill={item.actions ? Colors.white : "transparent"}
             stroke={Colors.white}
           />
