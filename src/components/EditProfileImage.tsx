@@ -3,6 +3,7 @@ import { Text, View, Image } from "react-native";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
 import UserAddPlusIcon from "../assets/icons/UserAddPlus.svg";
+import ImagePickerButton from "./ImagePicker";
 
 function EditProfileImage({ src }: { src: string }) {
   return (
@@ -28,24 +29,7 @@ function EditProfileImage({ src }: { src: string }) {
         )}
       </View>
 
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          alignSelf: "center",
-        }}
-      >
-        <Text
-          style={{
-            color: Colors.brand,
-            fontFamily: Fonts.Family.brand,
-            fontSize: Fonts.Size.font14,
-            fontWeight: Fonts.Weight.semi,
-          }}
-        >
-          Add photo
-        </Text>
-      </View>
+        <ImagePickerButton />
     </View>
   );
 }
