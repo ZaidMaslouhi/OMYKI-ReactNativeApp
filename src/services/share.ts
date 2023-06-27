@@ -1,6 +1,5 @@
-import axios from "axios";
-import { API_BASE } from "@env";
 import { UserRequested } from "../interfaces/User";
+import AxiosClient from "../config/axios";
 
 const ShareTemporarily = async ({
   id,
@@ -17,32 +16,19 @@ const ShareTemporarily = async ({
   start: Date;
   end: Date;
 }) => {
-  try {
-    const response = await axios.put(
-      `${API_BASE}/share/temporarily`,
-      JSON.stringify({
-        id,
-        fromUserId,
-        requestedPlaceId,
-        actionsIds,
-        start: start.toString(),
-        end: end.toString(),
-      }),
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+  const response = await AxiosClient.put(
+    "/share/temporarily",
+    JSON.stringify({
+      id,
+      fromUserId,
+      requestedPlaceId,
+      actionsIds,
+      start: start.toString(),
+      end: end.toString(),
+    })
+  );
 
-    if (response.status == 200) {
-      return { success: { data: response.data } };
-    }
-
-    throw new Error("Failed to share the place!");
-  } catch (error) {
-    throw new Error("Failed to share the place!");
-  }
+  return response;
 };
 
 const RequestSharePermanently = async ({
@@ -58,81 +44,42 @@ const RequestSharePermanently = async ({
   actionsIds: string[];
   userRequested: UserRequested;
 }) => {
-  try {
-    const response = await axios.put(
-      `${API_BASE}/share/permanently/request`,
-      JSON.stringify({
-        id,
-        fromUserId,
-        requestedPlaceId,
-        actionsIds,
-        userRequested: {
-          indicativeNumber: userRequested.indicativeNumber,
-          phoneNumber: userRequested.phoneNumber,
-          mail: userRequested.email,
-          firstName: userRequested.firstName,
-          lastName: userRequested.lastName,
-        },
-      }),
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+  const response = await AxiosClient.put(
+    "/share/permanently/request",
+    JSON.stringify({
+      id,
+      fromUserId,
+      requestedPlaceId,
+      actionsIds,
+      userRequested: {
+        indicativeNumber: userRequested.indicativeNumber,
+        phoneNumber: userRequested.phoneNumber,
+        mail: userRequested.email,
+        firstName: userRequested.firstName,
+        lastName: userRequested.lastName,
+      },
+    })
+  );
 
-    if (response.status == 200) {
-      return { success: { message: "Request share sent!" } };
-    }
-
-    throw new Error("Failed to share the place!");
-  } catch (error) {
-    throw new Error("Failed to share the place!");
-  }
+  return response;
 };
 
 const RefuseShareTemporarily = async ({ requestId }: { requestId: string }) => {
-  try {
-    const response = await axios.put(
-      `${API_BASE}/share/permanently/refuse`,
-      requestId,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+  const response = await AxiosClient.put(
+    "/share/permanently/refuse",
+    requestId
+  );
 
-    if (response.status == 200) {
-      return { success: { message: "Place share refused!" } };
-    }
-
-    throw new Error("Failed to refuse the place sharing!");
-  } catch (error) {
-    throw new Error("Failed to refuse the place sharing!");
-  }
+  return response;
 };
 
 const AcceptShareTemporarily = async ({ requestId }: { requestId: string }) => {
-  try {
-    const response = await axios.put(
-      `${API_BASE}/share/permanently/accept`,
-      requestId,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+  const response = await AxiosClient.put(
+    "/share/permanently/accept",
+    requestId
+  );
 
-    if (response.status == 200) {
-      return { success: { message: "Place share accepted!" } };
-    }
-
-    throw new Error("Failed to accept sharing the place!");
-  } catch (error) {
-    throw new Error("Failed to accept sharing the place!");
-  }
+  return response;
 };
 
 export {

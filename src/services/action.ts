@@ -1,24 +1,9 @@
-import axios from "axios";
-import { API_BASE } from "@env";
+import AxiosClient from "../config/axios";
 
 const TrigAction = async ({ actionId }: { actionId: string }) => {
-  try {
-    const response = await axios.get(
-      `${API_BASE}/actions/${actionId}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+  const response = await AxiosClient.get(`/actions/${actionId}`);
 
-    if (response.status == 200) {
-      return { success: { message: "Action triggered!" } };
-    }
-    throw new Error("Failed to trigger the action!");
-  } catch (error) {
-    throw new Error("Failed to trigger the action!");
-  }
+  return response;
 };
 
 const TrigActionByAnonymous = async ({
@@ -28,23 +13,11 @@ const TrigActionByAnonymous = async ({
   anonymousToken: string;
   actionId: string;
 }) => {
-  try {
-    const response = await axios.get(
-      `${API_BASE}/anonymous/${anonymousToken}/action/${actionId}/`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+  const response = await AxiosClient.get(
+    `/anonymous/${anonymousToken}/action/${actionId}/`
+  );
 
-    if (response.status == 200) {
-      return { success: { message: "Action triggered!" } };
-    }
-    throw new Error("Failed to trigger the action!");
-  } catch (error) {
-    throw new Error("Failed to trigger the action!");
-  }
+  return response;
 };
 
 export { TrigAction, TrigActionByAnonymous };
