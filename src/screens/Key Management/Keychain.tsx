@@ -67,13 +67,6 @@ const Places: Place[] = [
     actions: [
       {
         id: "",
-        name: "Main Entrance",
-        actionType: "DOOR",
-        longitude: "0",
-        latitude: "0",
-      },
-      {
-        id: "",
         name: "Hallway",
         actionType: "GARAGE",
         longitude: "0",
@@ -81,8 +74,22 @@ const Places: Place[] = [
       },
       {
         id: "",
+        name: "Main Entrance",
+        actionType: "DOOR",
+        longitude: "0",
+        latitude: "0",
+      },
+      {
+        id: "",
         name: "Main Office",
         actionType: "GATE",
+        longitude: "0",
+        latitude: "0",
+      },
+      {
+        id: "",
+        name: "Main Entrance 2",
+        actionType: "DOOR",
         longitude: "0",
         latitude: "0",
       },
@@ -107,6 +114,13 @@ const Places: Place[] = [
     actions: [
       {
         id: "",
+        name: "Main Office",
+        actionType: "GATE",
+        longitude: "0",
+        latitude: "0",
+      },
+      {
+        id: "",
         name: "Main Entrance",
         actionType: "DOOR",
         longitude: "0",
@@ -121,7 +135,7 @@ const Places: Place[] = [
       },
       {
         id: "",
-        name: "Main Office",
+        name: "Main Office 2",
         actionType: "GATE",
         longitude: "0",
         latitude: "0",
@@ -139,16 +153,20 @@ function Keychain() {
 
       {Places.length > 0 ? (
         <>
-          <KeysCarousel places={Places} />
+          <KeysCarousel
+            places={Places}
+            activePlace={(index) => setActivePlace(Places[index])}
+          />
 
           <FlatList
             numColumns={2}
             data={activePlace.actions}
             contentContainerStyle={{ padding: 8 }}
+            keyExtractor={(item, index) => item.name + index}
             renderItem={({ item, index }) => {
               return (
                 <KeyCard
-                  key={index}
+                  key={item.name + index}
                   keyName={item.name}
                   isLocked={index % 2 == 0}
                   isNearby={index === 0}
@@ -162,10 +180,9 @@ function Keychain() {
           title="You do not have any keys"
           icon={require("../../assets/images/Lock.png")}
           description="Sorry, you do not have access keys. Please contact your application administration to request access."
-          onPressButton={() => () => {}}
+          onPressButton={() => {}}
         />
       )}
-
       <ShareButton />
     </>
   );
