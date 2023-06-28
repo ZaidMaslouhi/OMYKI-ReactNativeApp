@@ -7,6 +7,7 @@ const AxiosClient = axios.create({
   headers: {
     "Content-Type": "application/json",
     Authorization: "Bearer <TOKEN>",
+    validateStatus: false,
   },
 });
 
