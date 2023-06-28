@@ -2,15 +2,16 @@ import "expo-dev-client";
 import "react-native-gesture-handler";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useCallback } from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import useCustomFonts from "./src/hooks/useCustomFonts";
 import { NavigationContainer } from "@react-navigation/native";
 import Navigator from "./src/navigation";
 import Colors from "./src/theme/colors";
 import { useAuthentication } from "./src/hooks/useAuthentication";
 import useNotificationMessaging from "./src/hooks/useNotificationMessaging";
-import { Provider } from "react-redux";
-import { store } from "./src/store";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { QueryClientProvider } from "react-query";
+import ReactQueryClient from "./src/config/reactQueryClient";
 
 export default function App() {
   const fontsLoaded = useCustomFonts();
@@ -28,7 +29,7 @@ export default function App() {
   }
 
   return (
-    <Provider store={store}>
+    <QueryClientProvider client={ReactQueryClient}>
       <SafeAreaView
         style={styles.container}
         onLayout={() => {
@@ -39,7 +40,7 @@ export default function App() {
           <Navigator />
         </NavigationContainer>
       </SafeAreaView>
-    </Provider>
+    </QueryClientProvider>
   );
 }
 
