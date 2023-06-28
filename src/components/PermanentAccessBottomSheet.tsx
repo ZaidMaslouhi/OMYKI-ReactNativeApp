@@ -1,4 +1,4 @@
-import React, { RefObject } from "react";
+import React, { RefObject, useEffect, useState } from "react";
 import FormInput from "./FormInput";
 import PhoneNumberInput from "./PhoneNumberInput";
 import Button from "./Button";
@@ -11,6 +11,7 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import EmailIcon from "../assets/icons/Email.svg";
 import ImportIcon from "../assets/icons/Import.svg";
 import UserProfileIcon from "../assets/icons/UserProfile.svg";
+import * as Contacts from "expo-contacts";
 
 const Devices = [
   "Main entrance",
@@ -21,11 +22,41 @@ const Devices = [
   "Bat A barrier",
 ];
 
+type Contact = {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+};
+
 function PermanentAccessBottomSheet({
   bottomSheetRef,
 }: {
   bottomSheetRef: RefObject<BottomSheetModal>;
 }) {
+  let [error, setError] = useState<string | undefined>(undefined);
+  let [contact, setContact] = useState<Contact | undefined>(undefined);
+
+  const importContact = async () => {
+    const { status } = await Contacts.requestPermissionsAsync();
+    if (status === "granted") {
+      const { data } = await Contacts.getContactsAsync({
+        fields: [Contacts.Fields.Emails],
+      });
+
+      if (data.length > 0) {
+        const contact = data[0];
+        setContact({
+          firstName: contact.firstName || "",
+          lastName: contact.lastName || "",
+          phoneNumber:
+            (contact.phoneNumbers && contact.phoneNumbers[0].number) || "",
+          email: (contact.emails && contact.emails[0].email) || "",
+        });
+      }
+    }
+  };
+
   return (
     <BottomSheetComponent
       title={"Permanent access"}
@@ -52,6 +83,7 @@ function PermanentAccessBottomSheet({
             placeholder="Enter your first name"
             style={{ fontFamily: Fonts.Family.brand }}
             cursorColor={Colors.brand}
+            value={contact?.firstName ?? ""}
           />
         </FormInput>
 
@@ -63,16 +95,18 @@ function PermanentAccessBottomSheet({
             placeholder="Enter your last Name"
             style={{ fontFamily: Fonts.Family.brand }}
             cursorColor={Colors.brand}
+            value={contact?.lastName ?? ""}
           />
         </FormInput>
 
-        <PhoneNumberInput />
+        <PhoneNumberInput phoneNumber={contact?.phoneNumber ?? ""} />
 
         <FormInput label={"Email"} icon={<EmailIcon stroke={Colors.neutral} />}>
           <TextInput
             placeholder="Enter your email"
             style={{ fontFamily: Fonts.Family.brand }}
             cursorColor={Colors.brand}
+            value={contact?.email ?? ""}
           />
         </FormInput>
 
@@ -82,7 +116,7 @@ function PermanentAccessBottomSheet({
             primary
             outline
             icon={<ImportIcon stroke={Colors.brand} />}
-            onPress={() => {}}
+            onPress={() => importContact()}
           />
           <Button
             title="Send Invited"
