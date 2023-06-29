@@ -1,11 +1,14 @@
 import { UserProfile } from "./User";
 
+type InvitationStatus = "Accepted" | "Rejected";
+
 interface Notification {
   id: string;
+  requestId: string,
   title: string;
   time: Date;
-  invitationStatus?: "Accepted" | "Rejected";
+  invitationStatus?: InvitationStatus;
   fromUser: UserProfile;
 }
 
-export default Notification;
+export { Notification, InvitationStatus };

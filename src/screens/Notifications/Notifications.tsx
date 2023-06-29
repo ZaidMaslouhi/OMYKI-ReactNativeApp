@@ -4,11 +4,12 @@ import { FlatList, View } from "react-native";
 import Colors from "../../theme/colors";
 import ModalInformation from "../../components/ModalInformation";
 import NotificationItem from "../../components/NotificationItem";
-import Notification from "../../interfaces/Notification";
+import {Notification} from "../../interfaces/Notification";
 
 const NotificationsList: Notification[] = [
   {
     id: "",
+    requestId: "123456789",
     title: "Alex wants to give you access to The Gardens by Délicis residence",
     time: new Date(new Date().setHours(12, 30)),
     fromUser: {
@@ -25,6 +26,7 @@ const NotificationsList: Notification[] = [
   },
   {
     id: "",
+    requestId: "987654321",
     title: "Mary wants to give you access to Beaumont Green",
     time: new Date(new Date().setHours(13, 45)),
     invitationStatus: "Accepted",
@@ -42,6 +44,7 @@ const NotificationsList: Notification[] = [
   },
   {
     id: "",
+    requestId: "147852369",
     title: "Alex wants to give you access to Les Mazets",
     time: new Date(new Date().setHours(6, 5)),
     invitationStatus: "Rejected",
