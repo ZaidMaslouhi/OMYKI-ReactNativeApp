@@ -12,6 +12,10 @@ import { Fonts } from "../../theme/fonts";
 import { useNavigation } from "@react-navigation/native";
 import * as yup from "yup";
 import { Formik } from "formik";
+import { GetUserProfile, UpdateUserProfile } from "../../services/account";
+import { useMutation, useQuery } from "react-query";
+import ReactQueryClient from "../../config/reactQueryClient";
+import { UserProfile } from "../../interfaces/User";
 
 const validationSchema = yup.object({
   firstName: yup.string().required(),
@@ -25,16 +29,35 @@ function MyDetails() {
   const [values, setValues] =
     useState<yup.InferType<typeof validationSchema>>();
 
+  const { data: userProfile } = useQuery<unknown, string, UserProfile>(
+    "profile",
+    GetUserProfile
+  );
+
+  const updateProfile = useMutation(UpdateUserProfile, {
+    onSuccess: () => {
+      ReactQueryClient.invalidateQueries("profile");
+    },
+  });
+
   const handleSubmitForm = async (values: any) => {
-    console.log("handleSubmit");
     console.log(values);
-    // const isValid = false;
     const validatedValues = await validationSchema.validate(values);
     if (validatedValues) {
-      navigation.navigate("Congratulations");
+      updateProfile.mutate({
+        profile: {
+          ...userProfile,
+          user: {
+            ...(userProfile as UserProfile).user,
+            firstName: validatedValues.firstName,
+            lastName: validatedValues.lastName,
+            phoneNumber: validatedValues.phoneNumber,
+            email: validatedValues.email,
+          },
+        },
+      });
     } else {
-      // Show validation errors
-      console.error("Invalid form data!");
+      console.error("Invalid form data!"); // Show validation errors
     }
   };
 
