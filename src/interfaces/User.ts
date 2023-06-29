@@ -7,12 +7,11 @@ interface User {
   email: string;
   phoneNumber: string;
   indicativeNumber: string;
-  rankPlaces?: string[];
 }
 
 interface UserProfile {
   user: User;
-  pictureProfile: ImageSourcePropType;
+  pictureProfile?: ImageSourcePropType;
   rankPlaces?: string[];
 }
 
