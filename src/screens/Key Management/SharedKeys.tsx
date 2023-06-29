@@ -5,13 +5,17 @@ import SharedKeysItem from "../../components/SharedKeysItem";
 import { Fonts } from "../../theme/fonts";
 import { useNavigation } from "@react-navigation/native";
 import { UserProfile } from "../../interfaces/User";
+import { useQuery } from "react-query";
+import Place from "../../interfaces/Place";
+import { GetAllPlacesByUser } from "../../services/place";
+import Action from "../../interfaces/Action";
 
-const Keys = [
+const Places = [
   {
     title: "Appartment 1",
     data: [
       {
-        key: "key 1",
+        key: { id: "Foo", actionType: "DOOR", name: "Home" } as Action,
         profile: {
           user: {
             firstName: "Bradley",
@@ -22,7 +26,7 @@ const Keys = [
         } as UserProfile,
       },
       {
-        key: "key 2",
+        key: { id: "Bar", actionType: "GATE", name: "Office" } as Action,
         profile: {
           user: {
             firstName: "Daniel",
@@ -38,7 +42,7 @@ const Keys = [
     title: "Appartment 2",
     data: [
       {
-        key: "key 4",
+        key: { id: "Baz", actionType: "LIGHT", name: "Room" } as Action,
         profile: {
           user: {
             firstName: "David",
@@ -54,7 +58,7 @@ const Keys = [
     title: "Appartment 3",
     data: [
       {
-        key: "key 5",
+        key: { id: "Daf", actionType: "GARAGE", name: "Residence" } as Action,
         profile: {
           user: {
             firstName: "James",
@@ -68,8 +72,22 @@ const Keys = [
   },
 ];
 
+// type SharedKey = { title: string; data: Action[] };
+
 function SharedKeys() {
   const navigation = useNavigation();
+
+  // const { isLoading, data: Places } = useQuery<unknown, string, SharedKey[] | []>(
+  //   "places",
+  //   GetAllPlacesByUser,
+  //   {
+  //     select: (data: any) =>
+  //       data.map(
+  //         (place: Place) =>
+  //           ({ title: place.name, data: place.actions } as SharedKey)
+  //       ),
+  //   }
+  // );
 
   return (
     <>
@@ -79,26 +97,28 @@ function SharedKeys() {
         onPress={() => navigation.goBack()}
       />
 
-      <SectionList
-        contentContainerStyle={{ padding: 16 }}
-        ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
-        SectionSeparatorComponent={() => <View style={{ height: 8 }} />}
-        sections={Keys}
-        renderSectionHeader={({ section: { title } }) => (
-          <Text
-            style={{
-              fontFamily: Fonts.Family.brand,
-              fontSize: Fonts.Size.font14,
-              fontWeight: Fonts.Weight.semi,
-            }}
-          >
-            {title}
-          </Text>
-        )}
-        renderItem={({ item }) => (
-          <SharedKeysItem accessKey={item.key} profile={item.profile} />
-        )}
-      />
+      {Places && Places.length > 0 && (
+        <SectionList
+          contentContainerStyle={{ padding: 16 }}
+          ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
+          SectionSeparatorComponent={() => <View style={{ height: 8 }} />}
+          sections={Places}
+          renderSectionHeader={({ section: { title } }) => (
+            <Text
+              style={{
+                fontFamily: Fonts.Family.brand,
+                fontSize: Fonts.Size.font14,
+                fontWeight: Fonts.Weight.semi,
+              }}
+            >
+              {title}
+            </Text>
+          )}
+          renderItem={({ item }) => (
+            <SharedKeysItem actionKey={item.key} profile={item.profile} />
+          )}
+        />
+      )}
     </>
   );
 }
