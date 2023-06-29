@@ -1,21 +1,30 @@
 import React from "react";
-import { Text, Image, View } from "react-native";
+import { Text, TouchableHighlight, View } from "react-native";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
 import DirectionIcon from "../assets/icons/Direction.svg";
 import LockedIcon from "../assets/icons/Locked.svg";
 import UnlockedIcon from "../assets/icons/Unlocked.svg";
-
+import { useMutation } from "react-query";
+import { TrigAction } from "../services/action";
+import ReactQueryClient from "../config/reactQueryClient";
+import Action from "../interfaces/Action";
 
 function KeyCard({
-  keyName,
+  action,
   isLocked,
   isNearby,
 }: {
-  keyName: string;
+  action: Action;
   isLocked: boolean;
   isNearby: boolean;
 }) {
+  const triggerAction = useMutation(TrigAction, {
+    onSuccess: () => {
+      ReactQueryClient.invalidateQueries("places");
+    },
+  });
+
   return (
     <View
       style={{
@@ -29,11 +38,12 @@ function KeyCard({
         backgroundColor: Colors.white,
       }}
     >
-      <View
+      <TouchableHighlight
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
         }}
+        onPress={() => triggerAction.mutate({ actionId: action.id })}
       >
         {isLocked ? <LockedIcon /> : <UnlockedIcon />}
 
@@ -51,7 +61,7 @@ function KeyCard({
             </Text>
           </View>
         )}
-      </View>
+      </TouchableHighlight>
       <Text
         style={{
           fontFamily: Fonts.Family.brand,
@@ -60,7 +70,7 @@ function KeyCard({
           color: Colors.dark,
         }}
       >
-        {keyName}
+        {action.name}
       </Text>
       <Text
         style={{
