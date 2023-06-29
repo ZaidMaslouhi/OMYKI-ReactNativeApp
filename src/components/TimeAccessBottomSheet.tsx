@@ -15,6 +15,9 @@ import Button from "./Button";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { useMutation } from "react-query";
+import { ShareTemporarily } from "../services/share";
+import ReactQueryClient from "../config/reactQueryClient";
 
 const Devices = [
   "Main entrance",
@@ -54,6 +57,35 @@ function TimeAccessBottomSheet({
       (el: { title: string; active: boolean }) => el.active
     )
   );
+
+  const shareAccessTemporarily = useMutation(ShareTemporarily, {
+    onSuccess: () => ReactQueryClient.invalidateQueries("places"),
+  });
+
+  const handleTemporarilyShareForm = () => {
+    const values = {
+      id: "123456",
+      fromUserId: "Jhon",
+      requestedPlaceId: "Home",
+      actionsIds: ["Foo", "Bar", "Baz"],
+      start: new Date(),
+      end: new Date(),
+    };
+    shareAccessTemporarily.mutate(
+      { ...values },
+      {
+        onSuccess: async ({ data }) => {
+          await Share.share(
+            {
+              message: `A Temporarily Access Key Shared with You: \n${data}`,
+            },
+            { dialogTitle: "OMYKI | Share Your Access Key" }
+          );
+          bottomSheetRef.current?.close();
+        },
+      }
+    );
+  };
 
   return (
     <BottomSheetComponent title={"Time access"} bottomSheetRef={bottomSheetRef}>
