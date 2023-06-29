@@ -12,6 +12,9 @@ import EmailIcon from "../assets/icons/Email.svg";
 import ImportIcon from "../assets/icons/Import.svg";
 import UserProfileIcon from "../assets/icons/UserProfile.svg";
 import * as Contacts from "expo-contacts";
+import { useMutation } from "react-query";
+import ReactQueryClient from "../config/reactQueryClient";
+import { RequestSharePermanently } from "../services/share";
 
 const Devices = [
   "Main entrance",
@@ -55,6 +58,34 @@ function PermanentAccessBottomSheet({
         });
       }
     }
+  };
+
+  const shareAccessPermanently = useMutation(RequestSharePermanently, {
+    onSuccess: () => ReactQueryClient.invalidateQueries("places"),
+  });
+
+  const handlePermanentlyShareForm = () => {
+    const values = {
+      id: "123456",
+      fromUserId: "Jhon",
+      requestedPlaceId: "Home",
+      actionsIds: ["Foo", "Bar", "Baz"],
+      userRequested: {
+        firstName: "jane",
+        lastName: "doe",
+        email: "jane.doe@gmail@gmail.com",
+        phoneNumber: "06987456321",
+        indicativeNumber: "+212",
+      },
+    };
+    shareAccessPermanently.mutate(
+      { ...values },
+      {
+        onSuccess: async () => {
+          bottomSheetRef.current?.close();
+        },
+      }
+    );
   };
 
   return (
