@@ -2,17 +2,11 @@ import axios from "axios";
 import { UserProfile } from "../interfaces/User";
 import AxiosClient from "../config/axios";
 
-const UpdateUserProfile = async ({
-  profile,
-  rankPlaces,
-}: {
-  profile: UserProfile;
-  rankPlaces: string[];
-}) => {
+const UpdateUserProfile = async ({ profile }: { profile: UserProfile }) => {
   const response = await AxiosClient.put(
     "/configuration/user/profile",
     JSON.stringify({
-      pictureProfile: profile.pictureProfile.toString(),
+      pictureProfile: profile.pictureProfile ?? "",
       userDto: {
         id: profile.user.id,
         firstName: profile.user.firstName,
@@ -21,7 +15,7 @@ const UpdateUserProfile = async ({
         indicativeNumber: profile.user.indicativeNumber,
         email: profile.user.email,
       },
-      rankPlaces,
+      rankPlaces: profile.rankPlaces,
     })
   );
 

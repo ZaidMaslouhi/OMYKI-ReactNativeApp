@@ -16,17 +16,14 @@ const ShareTemporarily = async ({
   start: Date;
   end: Date;
 }) => {
-  const response = await AxiosClient.put(
-    "/share/temporarily",
-    JSON.stringify({
-      id,
-      fromUserId,
-      requestedPlaceId,
-      actionsIds,
-      start: start.toString(),
-      end: end.toString(),
-    })
-  );
+  const response = await AxiosClient.put("/share/temporarily", {
+    id,
+    fromUserId,
+    requestedPlaceId,
+    actionsIds,
+    start: start.toString(),
+    end: end.toString(),
+  });
 
   return response;
 };
@@ -44,22 +41,19 @@ const RequestSharePermanently = async ({
   actionsIds: string[];
   userRequested: UserRequested;
 }) => {
-  const response = await AxiosClient.put(
-    "/share/permanently/request",
-    JSON.stringify({
-      id,
-      fromUserId,
-      requestedPlaceId,
-      actionsIds,
-      userRequested: {
-        indicativeNumber: userRequested.indicativeNumber,
-        phoneNumber: userRequested.phoneNumber,
-        mail: userRequested.email,
-        firstName: userRequested.firstName,
-        lastName: userRequested.lastName,
-      },
-    })
-  );
+  const response = await AxiosClient.put("/share/permanently/request", {
+    id,
+    fromUserId,
+    requestedPlaceId,
+    actionsIds,
+    userRequested: {
+      indicativeNumber: userRequested.indicativeNumber,
+      phoneNumber: userRequested.phoneNumber,
+      mail: userRequested.email,
+      firstName: userRequested.firstName,
+      lastName: userRequested.lastName,
+    },
+  });
 
   return response;
 };

@@ -2,7 +2,7 @@ import AxiosClient from "../config/axios";
 
 const GetAllPlacesByUser = async () => {
   // const response = await AxiosClient.get("/places");
-  // return response;
+  // return Response.data;
 
   return new Promise((resolve) =>
     resolve([
