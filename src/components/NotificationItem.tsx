@@ -2,53 +2,37 @@ import React, { useState, useRef, useEffect } from "react";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
 import { Image, Text, View } from "react-native";
-import AcceptedIcon from "../assets/icons/Accepted.svg";
-import RejectedIcon from "../assets/icons/Rejected.svg";
 import Button from "./Button";
-import Notification from "../interfaces/Notification";
-
-function InvitationMessage({ status }: { status: "Accepted" | "Rejected" }) {
-  return (
-    <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
-      {status === "Accepted" ? (
-        <AcceptedIcon stroke={Colors.success} />
-      ) : (
-        <RejectedIcon stroke={Colors.danger} />
-      )}
-      <Text
-        style={{
-          color: status === "Accepted" ? Colors.success : Colors.danger,
-          fontFamily: Fonts.Family.brand,
-          fontSize: Fonts.Size.font12,
-        }}
-      >
-        Invitation {status === "Accepted" ? "Accepted" : "Rejected"}
-      </Text>
-    </View>
-  );
-}
+import { InvitationStatus, Notification } from "../interfaces/Notification";
+import { useMutation } from "react-query";
+import ReactQueryClient from "../config/reactQueryClient";
+import {
+  AcceptShareTemporarily,
+  RefuseShareTemporarily,
+} from "../services/share";
+import InvitationMessage from "./InvitationMessage";
+import { convertTimeToString } from "../utils/utils";
 
 function NotificationItem({ item }: { item: Notification }) {
-  const [invitation, setInvitation] = useState<
-    typeof item.invitationStatus | undefined
-  >(item.invitationStatus);
-
   const timeString = useRef("now");
+  const [invitation, setInvitation] = useState<InvitationStatus | undefined>(
+    item.invitationStatus
+  );
 
   useEffect(() => {
-    let hours = item.time.getHours();
-    let period = "AM";
-    if (hours >= 12) {
-      period = "PM";
-      if (hours > 12) {
-        hours -= 12;
-      }
-    }
-    const minutes = item.time.getMinutes();
-    timeString.current = `${hours}:${
-      minutes < 10 ? "0" + minutes : minutes
-    } ${period}`;
+    timeString.current = convertTimeToString({ time: item.time });
   }, []);
+
+  const acceptShareInvitation = useMutation(AcceptShareTemporarily, {
+    onSuccess: () => {
+      setInvitation("Accepted");
+      ReactQueryClient.invalidateQueries("places");
+    },
+  });
+
+  const rejectShareInvitation = useMutation(RefuseShareTemporarily, {
+    onSuccess: () => setInvitation("Rejected"),
+  });
 
   return (
     <View style={{ gap: 16, padding: 16 }}>
@@ -68,7 +52,10 @@ function NotificationItem({ item }: { item: Notification }) {
           }}
         >
           <Image
-            source={item.fromUser.pictureProfile}
+            source={
+              item.fromUser.pictureProfile ??
+              require("../assets/images/Profile.png")
+            }
             style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
           />
           <View style={{ gap: 4 }}>
@@ -100,7 +87,7 @@ function NotificationItem({ item }: { item: Notification }) {
               color: Colors.dark,
             }}
           >
-            {timeString.current }
+            {timeString.current}
           </Text>
         </View>
       </View>
@@ -130,7 +117,9 @@ function NotificationItem({ item }: { item: Notification }) {
             <Button
               title="Accept"
               primary
-              onPress={() => setInvitation("Accepted")}
+              onPress={() =>
+                acceptShareInvitation.mutate({ requestId: item.requestId })
+              }
             />
           </View>
           <View style={{ flex: 1 }}>
@@ -138,7 +127,9 @@ function NotificationItem({ item }: { item: Notification }) {
               title="Decline"
               primary
               outline
-              onPress={() => setInvitation("Rejected")}
+              onPress={() =>
+                rejectShareInvitation.mutate({ requestId: item.requestId })
+              }
             />
           </View>
         </View>
