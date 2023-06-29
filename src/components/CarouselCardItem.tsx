@@ -1,13 +1,47 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, TouchableHighlight } from "react-native";
 import Colors from "../theme/colors";
 import { ImageBackground } from "react-native";
 import { Fonts } from "../theme/fonts";
 import StarIcon from "../assets/icons/Star.svg";
 import FavStar from "../assets/icons/FavStar.svg";
 import Place from "../interfaces/Place";
+import { useMutation, useQuery } from "react-query";
+import { GetUserProfile, UpdateUserProfile } from "../services/account";
+import { UserProfile } from "../interfaces/User";
+import ReactQueryClient from "../config/reactQueryClient";
 
-const CarouselCardItem = ({ item, width }: { item: Place; width: number }) => {
+const CarouselCardItem = ({
+  item,
+  isFavourite,
+  width,
+}: {
+  item: Place;
+  isFavourite: boolean;
+  width: number;
+}) => {
+  const { data: userProfile } = useQuery<unknown, string, UserProfile>(
+    "profile",
+    GetUserProfile
+  );
+
+  const toggleFavouritePlace = useMutation(UpdateUserProfile, {
+    onSuccess: () => {
+      ReactQueryClient.invalidateQueries("profile");
+    },
+  });
+
+  const handleStarClick = () => {
+    toggleFavouritePlace.mutate({
+      profile: {
+        ...(userProfile as UserProfile),
+        rankPlaces: !isFavourite
+          ? [...(userProfile?.rankPlaces as string[]), item.id]
+          : userProfile?.rankPlaces?.filter((place) => place !== item.id),
+      },
+    });
+  };
+
   return (
     <View
       style={{
@@ -15,7 +49,7 @@ const CarouselCardItem = ({ item, width }: { item: Place; width: number }) => {
         borderRadius: 16,
       }}
     >
-      <View
+      <TouchableHighlight
         style={{
           justifyContent: "center",
           alignItems: "center",
@@ -30,9 +64,10 @@ const CarouselCardItem = ({ item, width }: { item: Place; width: number }) => {
           left: -5,
           zIndex: 2,
         }}
+        onPress={() => handleStarClick()}
       >
-        <StarIcon fill={Colors.white} />
-      </View>
+        <StarIcon fill={isFavourite ? Colors.white : ""} />
+      </TouchableHighlight>
       <ImageBackground
         source={{ uri: item.placePictureUrl }}
         resizeMode="cover"
