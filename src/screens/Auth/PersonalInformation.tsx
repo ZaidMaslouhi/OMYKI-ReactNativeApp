@@ -21,7 +21,8 @@ const validationSchema = yup.object({
   lastName: yup.string().required(),
   email: yup.string().required().email(),
   phoneNumber: yup.string().required(),
-  photoURL: yup.string(),
+  indicativeNumber: yup.string().required(),
+  pictureProfile: yup.string().notRequired(),
 });
 
 function PersonalInformation({
@@ -38,8 +39,9 @@ function PersonalInformation({
     firstName: userInfo.displayName?.split(" ")[0] || "",
     lastName: userInfo.displayName?.split(" ")[1] || "",
     email: userInfo.email || "",
-    photoURL: userInfo.photoURL || "",
-    phoneNumber: "",
+    pictureProfile: userInfo.photoURL || "",
+    phoneNumber: userInfo.phoneNumber || "",
+    indicativeNumber: "",
   });
 
   const handleSubmitForm = async (
@@ -80,7 +82,10 @@ function PersonalInformation({
         >
           {({ values, errors, handleSubmit, handleChange }) => (
             <>
-              <EditProfileImage src={values?.photoURL || ""} />
+              <EditProfileImage
+                src={values?.pictureProfile || ""}
+                onChange={handleChange("pictureProfile")}
+              />
               <FormInput
                 label={"First Name"}
                 icon={<IconUserProfile stroke={Colors.dark} />}
@@ -124,9 +129,16 @@ function PersonalInformation({
               </FormInput>
 
               <PhoneNumberInput
-                phoneNumber={values?.phoneNumber}
-                handleChange={handleChange("phoneNumber")}
-                errorMessage={errors.phoneNumber?.toString()}
+                phoneNumber={{
+                  number: values.phoneNumber,
+                  indicative: values.indicativeNumber,
+                }}
+                handleChangeNumber={handleChange("phoneNumber")}
+                handleChangeCallingCode={handleChange("indicativeNumber")}
+                errorMessage={
+                  errors.phoneNumber?.toString() ||
+                  errors.indicativeNumber?.toString()
+                }
               />
 
               <Button title="Continue" primary onPress={() => handleSubmit()} />
