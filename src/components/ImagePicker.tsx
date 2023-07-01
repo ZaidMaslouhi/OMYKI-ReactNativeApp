@@ -4,17 +4,20 @@ import * as ImagePicker from "expo-image-picker";
 import Colors from "../theme/colors";
 import { Fonts } from "../theme/fonts";
 
-export default function ImagePickerButton() {
+export default function ImagePickerButton({
+  onChange,
+}: {
+  onChange: (uri: string) => void;
+}) {
   const [hasGalleryPermission, setHasGalleryPermission] = useState<
     boolean | null
   >(null);
-  const [image, setImage] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
       const galleryStatus =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
-        console.log("galleryStatus",galleryStatus.status);
+      console.log("galleryStatus", galleryStatus.status);
       setHasGalleryPermission(galleryStatus.status === "granted");
     })();
   }, []);
@@ -30,7 +33,8 @@ export default function ImagePickerButton() {
     console.log(result);
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      onChange(result.assets[0].uri);
+      // setImage(result.assets[0].uri);
     }
   };
 
@@ -55,15 +59,6 @@ export default function ImagePickerButton() {
       >
         Add photo
       </Text>
-      {image && (
-        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-      )}
     </View>
-    // <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    //   <Button title="Pick an image from camera roll" onPress={pickImage} />
-    //   {image && (
-    //     <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-    //   )}
-    // </View>
   );
 }
