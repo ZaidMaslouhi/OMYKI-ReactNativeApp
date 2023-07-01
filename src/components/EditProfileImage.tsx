@@ -1,11 +1,16 @@
 import React from "react";
-import { Text, View, Image } from "react-native";
+import { View, Image } from "react-native";
 import Colors from "../theme/colors";
-import { Fonts } from "../theme/fonts";
 import UserAddPlusIcon from "../assets/icons/UserAddPlus.svg";
 import ImagePickerButton from "./ImagePicker";
 
-function EditProfileImage({ src }: { src: string }) {
+function EditProfileImage({
+  src,
+  onChange,
+}: {
+  src: string;
+  onChange: (uri: string) => void;
+}) {
   return (
     <View style={{ gap: 16 }}>
       <View
@@ -29,7 +34,7 @@ function EditProfileImage({ src }: { src: string }) {
         )}
       </View>
 
-        <ImagePickerButton />
+      <ImagePickerButton onChange={onChange} />
     </View>
   );
 }
