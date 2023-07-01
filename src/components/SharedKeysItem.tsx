@@ -44,7 +44,11 @@ function SharedKeysItem({
           }}
         >
           <Image
-            source={{ uri: profile.pictureProfile?.toString() }}
+            source={{
+              uri:
+                profile.pictureProfile ??
+                require("../assets/images/Profile.png"),
+            }}
             style={{ width: 35, height: 35, borderRadius: 35 / 2 }}
           />
           <View style={{ gap: 4 }}>
