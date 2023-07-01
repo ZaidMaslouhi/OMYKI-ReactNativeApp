@@ -10,17 +10,19 @@ import CountryPicker, {
 const PhoneNumberInput = ({
   phoneNumber,
   errorMessage,
-  handleChange,
+  handleChangeNumber,
+  handleChangeCallingCode,
 }: {
-  phoneNumber?: string;
+  phoneNumber?: { number: string; indicative: string };
   errorMessage?: string;
-  handleChange?: (text: string) => void;
+  handleChangeNumber: (text: string) => void;
+  handleChangeCallingCode: (text: string) => void;
 }) => {
   const [countryCode, setCountryCode] = useState<CountryCode>("FR");
 
   const selectCountry = (selectedCountry: Country) => {
-    console.log(selectedCountry.cca2);
     setCountryCode(selectedCountry.cca2);
+    handleChangeCallingCode(selectedCountry.callingCode[0]);
   };
 
   return (
@@ -74,8 +76,8 @@ const PhoneNumberInput = ({
           >
             <TextInput
               keyboardType="phone-pad"
-              value={phoneNumber}
-              onChangeText={handleChange}
+              value={phoneNumber?.number}
+              onChangeText={handleChangeNumber}
               placeholder="Enter your phone number"
               style={{ fontFamily: Fonts.Family.brand }}
               cursorColor={Colors.brand}
