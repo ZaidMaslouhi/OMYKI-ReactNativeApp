@@ -21,7 +21,9 @@ const validationSchema = yup.object({
   firstName: yup.string().required(),
   lastName: yup.string().required(),
   phoneNumber: yup.string().required(),
+  indicativeNumber: yup.string().required(),
   email: yup.string().required().email(),
+  pictureProfile: yup.string().notRequired(),
 });
 
 function MyDetails() {
@@ -47,6 +49,9 @@ function MyDetails() {
       updateProfile.mutate({
         profile: {
           ...userProfile,
+          pictureProfile:
+            validatedValues.pictureProfile ||
+            (userProfile as UserProfile).pictureProfile,
           user: {
             ...(userProfile as UserProfile).user,
             firstName: validatedValues.firstName,
@@ -70,8 +75,6 @@ function MyDetails() {
       />
 
       <ScrollView contentContainerStyle={{ gap: 16, padding: 16 }}>
-        <EditProfileImage src="" />
-
         <Formik
           initialValues={{ ...values }}
           validationSchema={validationSchema}
@@ -79,6 +82,10 @@ function MyDetails() {
         >
           {({ values, errors, handleSubmit, handleChange }) => (
             <>
+              <EditProfileImage
+                src={values.pictureProfile ?? ""}
+                onChange={handleChange("pictureProfile")}
+              />
               <FormInput
                 label={"First Name"}
                 icon={
@@ -114,9 +121,16 @@ function MyDetails() {
               </FormInput>
 
               <PhoneNumberInput
-                phoneNumber={values?.phoneNumber}
-                handleChange={handleChange("phoneNumber")}
-                errorMessage={errors.phoneNumber?.toString()}
+                phoneNumber={{
+                  number: values.phoneNumber ?? "",
+                  indicative: values.indicativeNumber ?? "33",
+                }}
+                handleChangeNumber={handleChange("phoneNumber")}
+                handleChangeCallingCode={handleChange("indicativeNumber")}
+                errorMessage={
+                  errors.phoneNumber?.toString() ||
+                  errors.indicativeNumber?.toString()
+                }
               />
 
               <FormInput
