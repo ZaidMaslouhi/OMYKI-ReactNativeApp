@@ -11,81 +11,99 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import EmailIcon from "../assets/icons/Email.svg";
 import ImportIcon from "../assets/icons/Import.svg";
 import UserProfileIcon from "../assets/icons/UserProfile.svg";
-import * as Contacts from "expo-contacts";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import ReactQueryClient from "../config/reactQueryClient";
 import { RequestSharePermanently } from "../services/share";
+import { GetAllPlacesByUser } from "../services/place";
+import Action from "../interfaces/Action";
+import Place from "../interfaces/Place";
+import * as yup from "yup";
+import { Formik } from "formik";
+import { importContact } from "../utils/utils";
+import { UserProfile } from "../interfaces/User";
+import { GetUserProfile } from "../services/account";
 
-const Devices = [
-  "Main entrance",
-  "Garage",
-  "Bat A barrier",
-  "Main entrance",
-  "Garage",
-  "Bat A barrier",
-];
-
-type Contact = {
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  email: string;
-};
+const validationSchema = yup.object({
+  devices: yup.array(yup.string()).required(),
+  requestedId: yup.string().required(),
+  firstName: yup.string().required(),
+  lastName: yup.string().required(),
+  phoneNumber: yup.string().required(),
+  indicativeNumber: yup.string().required(),
+  email: yup.string().required().email(),
+});
 
 function PermanentAccessBottomSheet({
   bottomSheetRef,
 }: {
   bottomSheetRef: RefObject<BottomSheetModal>;
 }) {
-  let [error, setError] = useState<string | undefined>(undefined);
-  let [contact, setContact] = useState<Contact | undefined>(undefined);
+  const [values, setValues] =
+    useState<yup.InferType<typeof validationSchema>>();
 
-  const importContact = async () => {
-    const { status } = await Contacts.requestPermissionsAsync();
-    if (status === "granted") {
-      const { data } = await Contacts.getContactsAsync({
-        fields: [Contacts.Fields.Emails],
+  const importContactInfo = async () => {
+    const contact = await importContact();
+    if (contact) {
+      setValues({
+        devices: values?.devices || [],
+        requestedId: values?.requestedId || "",
+        firstName: contact?.firstName || "",
+        lastName: contact?.lastName || "",
+        email: contact?.email || "",
+        phoneNumber: contact?.phoneNumber || "",
+        indicativeNumber: contact?.indicativeNumber || "",
       });
-
-      if (data.length > 0) {
-        const contact = data[0];
-        setContact({
-          firstName: contact.firstName || "",
-          lastName: contact.lastName || "",
-          phoneNumber:
-            (contact.phoneNumbers && contact.phoneNumbers[0].number) || "",
-          email: (contact.emails && contact.emails[0].email) || "",
-        });
-      }
+    } else {
+      console.log("No contact Found!");
     }
   };
+
+  const { data: userProfile } = useQuery<unknown, string, UserProfile>(
+    "profile",
+    GetUserProfile
+  );
+
+  const { data: Devices } = useQuery<unknown, string, Action[]>(
+    "places",
+    GetAllPlacesByUser,
+    {
+      select: (data: any) => data.flatMap((place: Place) => place.actions),
+    }
+  );
 
   const shareAccessPermanently = useMutation(RequestSharePermanently, {
     onSuccess: () => ReactQueryClient.invalidateQueries("places"),
   });
 
-  const handlePermanentlyShareForm = () => {
-    const values = {
-      id: "123456",
-      fromUserId: "Jhon",
-      requestedPlaceId: "Home",
-      actionsIds: ["Foo", "Bar", "Baz"],
-      userRequested: {
-        firstName: "jane",
-        lastName: "doe",
-        email: "jane.doe@gmail@gmail.com",
-        phoneNumber: "06987456321",
-        indicativeNumber: "+212",
-      },
-    };
-    shareAccessPermanently.mutate(
-      { ...values },
-      {
-        onSuccess: async () => {
-          bottomSheetRef.current?.close();
+  const handlePermanentlyShareForm = async (values: any) => {
+    console.log(values);
+    const validatedValues = await validationSchema.validate(values);
+    if (validatedValues) {
+      const shareAccess = {
+        id: "",
+        fromUserId: (userProfile as UserProfile).user.id,
+        requestedPlaceId: validatedValues.requestedId,
+        actionsIds: validatedValues.devices as string[],
+        userRequested: {
+          firstName: validatedValues.firstName,
+          lastName: validatedValues.lastName,
+          email: validatedValues.email,
+          phoneNumber: validatedValues.phoneNumber,
+          indicativeNumber: validatedValues.indicativeNumber,
         },
-      }
-    );
+      };
+      shareAccessPermanently.mutate(
+        { ...shareAccess },
+        {
+          onSuccess: async () => {
+            console.log("The Access Key Was Send!");
+            bottomSheetRef.current?.close();
+          },
+        }
+      );
+    } else {
+      console.error("Invalid form data!"); // Show validation errors
+    }
   };
 
   return (
@@ -93,77 +111,98 @@ function PermanentAccessBottomSheet({
       title={"Permanent access"}
       bottomSheetRef={bottomSheetRef}
     >
-      <>
-        <View style={{ gap: 10 }}>
-          <Text
-            style={{
-              color: Colors.dark,
-              fontFamily: Fonts.Family.brand,
-            }}
-          >
-            Device
-          </Text>
-          <HorizontalList items={Devices} />
-        </View>
+      <Formik
+        initialValues={{ ...values }}
+        validationSchema={validationSchema}
+        onSubmit={handlePermanentlyShareForm}
+      >
+        {({ values, errors, handleSubmit, handleChange }) => (
+          <>
+            <View style={{ gap: 10 }}>
+              <Text
+                style={{
+                  color: Colors.dark,
+                  fontFamily: Fonts.Family.brand,
+                }}
+              >
+                Device
+              </Text>
+              {Devices && (
+                <HorizontalList
+                  items={Devices}
+                  onChange={handleChange("devices")}
+                />
+              )}
+            </View>
 
-        <FormInput
-          label={"First Name"}
-          icon={<UserProfileIcon stroke={Colors.neutral} />}
-        >
-          <TextInput
-            placeholder="Enter your first name"
-            style={{ fontFamily: Fonts.Family.brand }}
-            cursorColor={Colors.brand}
-            value={contact?.firstName ?? ""}
-          />
-        </FormInput>
+            <FormInput
+              label={"First Name"}
+              icon={<UserProfileIcon stroke={Colors.neutral} />}
+              errorMessage={errors.firstName?.toString()}
+            >
+              <TextInput
+                placeholder="Enter your first name"
+                style={{ fontFamily: Fonts.Family.brand }}
+                cursorColor={Colors.brand}
+                value={values?.firstName}
+                onChangeText={handleChange("firstName")}
+              />
+            </FormInput>
 
-        <FormInput
-          label={"Last Name"}
-          icon={<UserProfileIcon stroke={Colors.neutral} />}
-        >
-          <TextInput
-            placeholder="Enter your last Name"
-            style={{ fontFamily: Fonts.Family.brand }}
-            cursorColor={Colors.brand}
-            value={contact?.lastName ?? ""}
-          />
-        </FormInput>
+            <FormInput
+              label={"Last Name"}
+              icon={<UserProfileIcon stroke={Colors.neutral} />}
+              errorMessage={errors.lastName?.toString()}
+            >
+              <TextInput
+                placeholder="Enter your last Name"
+                style={{ fontFamily: Fonts.Family.brand }}
+                cursorColor={Colors.brand}
+                value={values?.lastName}
+                onChangeText={handleChange("lastName")}
+              />
+            </FormInput>
 
-        <PhoneNumberInput phoneNumber={contact?.phoneNumber ?? ""} />
+            <PhoneNumberInput
+              phoneNumber={{
+                number: values?.phoneNumber ?? "",
+                indicative: values?.indicativeNumber ?? "",
+              }}
+              handleChange={handleChange("phoneNumber")}
+              errorMessage={errors.phoneNumber?.toString()}
+            />
 
-        <FormInput label={"Email"} icon={<EmailIcon stroke={Colors.neutral} />}>
-          <TextInput
-            placeholder="Enter your email"
-            style={{ fontFamily: Fonts.Family.brand }}
-            cursorColor={Colors.brand}
-            value={contact?.email ?? ""}
-          />
-        </FormInput>
+            <FormInput
+              label={"Email"}
+              icon={<EmailIcon stroke={Colors.neutral} />}
+              errorMessage={errors.email?.toString()}
+            >
+              <TextInput
+                placeholder="Enter your email"
+                style={{ fontFamily: Fonts.Family.brand }}
+                cursorColor={Colors.brand}
+                value={values?.email}
+                onChangeText={handleChange("email")}
+              />
+            </FormInput>
 
-        <View style={{ gap: 16 }}>
-          <Button
-            title="Import Сontact"
-            primary
-            outline
-            icon={<ImportIcon stroke={Colors.brand} />}
-            onPress={() => importContact()}
-          />
-          <Button
-            title="Send Invited"
-            primary
-            onPress={async () => {
-              const result = await Share.share(
-                {
-                  message: `Access Key Shared with You: \nhttps://www.google.com/`,
-                },
-                { dialogTitle: "OMYKI | Share Your Access Key" }
-              );
-              console.log("Shared Key: ", result);
-            }}
-          />
-        </View>
-      </>
+            <View style={{ gap: 16 }}>
+              <Button
+                title="Import Contact"
+                primary
+                outline
+                icon={<ImportIcon stroke={Colors.brand} />}
+                onPress={() => importContactInfo()}
+              />
+              <Button
+                title="Send Invited"
+                primary
+                onPress={() => handleSubmit()}
+              />
+            </View>
+          </>
+        )}
+      </Formik>
     </BottomSheetComponent>
   );
 }
