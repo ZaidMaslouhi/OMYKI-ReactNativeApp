@@ -11,7 +11,7 @@ interface User {
 
 interface UserProfile {
   user: User;
-  pictureProfile?: ImageSourcePropType;
+  pictureProfile?: string;
   rankPlaces?: string[];
 }
 
